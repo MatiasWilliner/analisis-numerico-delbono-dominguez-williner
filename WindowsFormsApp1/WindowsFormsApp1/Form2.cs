@@ -14,7 +14,7 @@ namespace WindowsFormsApp1
 {
     public partial class Form2 : Form
     {
-        Metodo1 metodo1 = new Metodo1();
+        Principal principal = new Principal();
         public Form2()
         {
             InitializeComponent();
@@ -33,14 +33,21 @@ namespace WindowsFormsApp1
         {
             if (comboBox1.SelectedItem.ToString() == "Bisección")
             {
+                
                 Function funcion = new Function($"funcion(x)={textBox1.Text}");
                 int xi = int.Parse(textBox2.Text);
                 int xd = int.Parse(textBox3.Text);
-                //Expression expresion = new Expression($"funcion({textBox2.Text},{textBox3.Text})", funcion);
                 int numeroIteraciones = int.Parse(textBox4.Text);
                 double tolerancia = double.Parse(textBox5.Text);
-                //bool resultado=metodo1.RealizarCalculo(funcion,xi,xd,numeroIteraciones,tolerancia);
+                Respuesta resultado=principal.RealizarCalculo(funcion,xi,xd,numeroIteraciones,tolerancia);
+                label15.Text = resultado.Converge;
+                label15.Text= resultado.Converge;
+                label11.Text = resultado.Comentario;
+                label14.Text = resultado.Raiz;
+                label13.Text = resultado.Iteraciones;
+                label12.Text = resultado.Error;
             }
+            
         }
     }
 }

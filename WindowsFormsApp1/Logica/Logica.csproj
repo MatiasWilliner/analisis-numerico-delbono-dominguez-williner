@@ -44,9 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Metodo1.cs" />
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Respuesta.cs" />
+    <Compile Include="ResultadoComprobacion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
