@@ -19,6 +19,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             comboBox1.Items.Add("Bisección");
+            comboBox1.Items.Add("regla falsa");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -48,6 +49,11 @@ namespace WindowsFormsApp1
                 label12.Text = resultado.Error;
             }
             
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

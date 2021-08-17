@@ -124,5 +124,49 @@ namespace Logica
         {
             return Math.Abs((xr - xAnt) / xr);
         }
+        public Respuesta CalculoReglaFalsa(Function funcion, int Xi, int Xd, int numeroIteraciones, double Tolerancia)
+        {
+            Respuesta ReglaFalsa = new Respuesta();
+            int cont = 1;
+            double Xanterior = 0;
+            Expression Xizquierda = new Expression();
+            Expression Xderecha = new Expression();
+            double funcionXizquierda = Xizquierda.calculate();
+            double funcionXderecha = Xderecha.calculate();
+            if (funcionXizquierda * funcionXderecha == 0)
+            {
+                if (funcionXizquierda == 0)
+                {
+                    cont += 1;
+                    ReglaFalsa.Raiz = Xizquierda.ToString();
+                    ReglaFalsa.Comentario = "Xizquierda es raìz";
+                }
+                else
+                {
+                    ReglaFalsa.Raiz = Xderecha.ToString();
+                    ReglaFalsa.Comentario = "Xderecha es raìz";
+
+                }
+                ReglaFalsa.Converge = "Si";
+                ReglaFalsa.Iteraciones = cont.ToString();
+                return ReglaFalsa;
+            }
+            else
+                if (funcionXizquierda * funcionXderecha > 0)
+            {
+                ReglaFalsa.Raiz = "-";
+                ReglaFalsa.Comentario = "no hay raìz";
+                ReglaFalsa.Converge = "No";
+                ReglaFalsa.Iteraciones = cont.ToString();
+            }
+            else
+            {
+
+            }
+
+            return null;
+        }
     }
 }
+
+
