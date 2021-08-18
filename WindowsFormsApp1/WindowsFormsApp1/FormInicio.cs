@@ -11,23 +11,28 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class FormInicio : Form
     {
-        public Form1()
+        public FormInicio()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnUnidad1_Click(object sender, EventArgs e)
         {
-            Form2 unidad1 = new Form2();
+            FormUnidad1 unidad1 = new FormUnidad1();
             unidad1.Show();
             this.Visible = false;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnSalir_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
+        }
+
+        private void btnUnidad2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
