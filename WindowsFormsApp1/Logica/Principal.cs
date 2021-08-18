@@ -10,7 +10,7 @@ namespace Logica
 {
     public class Principal
     {
-        public Respuesta RealizarCalculo(Function funcion, int xi, int xd, int numeroIteraciones, double tolerancia)
+        public Respuesta RealizarCalculo(Function funcion, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta respuesta = new Respuesta();
             int contador = 1;
@@ -41,7 +41,7 @@ namespace Logica
             }
             else
             {
-                if (funcionxi * funcionxd < 0)
+                if (funcionxi * funcionxd > 0)
                 {
                     respuesta.Raiz = "-";
                     respuesta.Comentario = "No hay raiz entre los valores";
@@ -51,12 +51,12 @@ namespace Logica
                 }
                 else
                 {
-                    int xr = (xi + xd) / 2;
+                    double xr = (xi + xd) / 2;
                     double error = CalcularError(xr, xAnt);
-                    Argument nuevoArgumento = new Argument($"nuevoArgumento={xr}");
-                    Expression nuevaExpresion = new Expression($"funcion({nuevoArgumento})", funcion, nuevoArgumento);
+                    Argument x = new Argument($"x={xr}");
+                    Expression nuevaExpresion = new Expression($"funcion(x)", funcion, x);
                     ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
-                    while (resultado.Resultado != false && nuevaExpresion.calculate() != 0)
+                    while (resultado.Resultado != false)
                     {
                         if (nuevaExpresion.calculate() * expresionxi.calculate() < 0)
                         {
@@ -71,8 +71,8 @@ namespace Logica
                         xr = (xi + xd) / 2;
                         error = CalcularError(xr, xAnt);
                         contador += 1;
-                        nuevoArgumento = new Argument($"nuevoArgumento={xr}");
-                        nuevaExpresion = new Expression($"funcion({nuevoArgumento})", funcion, nuevoArgumento);
+                        x = new Argument($"nuevoArgumento={xr}");
+                        nuevaExpresion = new Expression($"funcion(x)", funcion, x);
                         resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
 
                     }
@@ -89,10 +89,10 @@ namespace Logica
         private ResultadoComprobacion ComprobarCondiciones(double tolerancia, int iteraciones, int contador, Expression funcion, double error)
         {
             ResultadoComprobacion resultado = new ResultadoComprobacion();
-            if (Math.Abs(funcion.calculate()) < tolerancia)
+            if (funcion.calculate() == 0)
             {
-                resultado.Comentario = "El valor es menor a la tolerancia";
                 resultado.Resultado = false;
+                resultado.Comentario = "xr es la raiz";
             }
             else
             {
@@ -110,8 +110,15 @@ namespace Logica
                     }
                     else
                     {
-                        resultado.Resultado = true;
-                        resultado.Comentario = "xr es la raiz";
+                        if (Math.Abs(funcion.calculate()) < tolerancia)
+                        {
+                            resultado.Comentario = "El valor es menor a la tolerancia";
+                            resultado.Resultado = false;
+                        }
+                        else
+                        {
+                            resultado.Resultado = true;
+                        }
                     }
 
                 }
@@ -161,12 +168,11 @@ namespace Logica
             }
             else
             {
-
+                // double Xr=(funcionXderecha*Xizquierda-funcionXizquierda*Xderecha)/funcionXDerecha-funcionXizquierda)
             }
-
             return null;
+
         }
     }
 }
-
 
