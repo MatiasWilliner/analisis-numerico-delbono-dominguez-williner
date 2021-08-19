@@ -131,48 +131,74 @@ namespace Logica
         {
             return Math.Abs((xr - xAnt) / xr);
         }
-        public Respuesta CalculoReglaFalsa(Function funcion, int Xi, int Xd, int numeroIteraciones, double Tolerancia)
+
+        //////////////////////////////// Cálculo regla falsa //////////////////////////////
+        public Respuesta CalcularReglaFalsa(Function funcion, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta ReglaFalsa = new Respuesta();
-            int cont = 1;
-            double Xanterior = 0;
-            Expression Xizquierda = new Expression();
-            Expression Xderecha = new Expression();
-            double funcionXizquierda = Xizquierda.calculate();
-            double funcionXderecha = Xderecha.calculate();
-            if (funcionXizquierda * funcionXderecha == 0)
+            int contador = 1;
+            double xAnt = 0;
+            Expression expresionxi = new Expression();
+            Expression expresionxd = new Expression();
+            double funcionxi = expresionxi.calculate();
+            double funcionxd = expresionxd.calculate();
+            if (funcionxi * funcionxd == 0)
             {
-                if (funcionXizquierda == 0)
+                if (funcionxi == 0)
                 {
-                    cont += 1;
-                    ReglaFalsa.Raiz = Xizquierda.ToString();
-                    ReglaFalsa.Comentario = "Xizquierda es raìz";
+                    ReglaFalsa.Raiz = expresionxi.ToString();
+                    ReglaFalsa.Comentario = "xi es raìz";
                 }
                 else
                 {
-                    ReglaFalsa.Raiz = Xderecha.ToString();
-                    ReglaFalsa.Comentario = "Xderecha es raìz";
-
+                    ReglaFalsa.Raiz = expresionxi.ToString();
+                    ReglaFalsa.Comentario = "xd es raìz";
                 }
                 ReglaFalsa.Converge = "Si";
-                ReglaFalsa.Iteraciones = cont.ToString();
+                ReglaFalsa.Iteraciones = contador.ToString();
                 return ReglaFalsa;
             }
             else
-                if (funcionXizquierda * funcionXderecha > 0)
+                if (funcionxi * funcionxd > 0)
             {
                 ReglaFalsa.Raiz = "-";
-                ReglaFalsa.Comentario = "no hay raìz";
+                ReglaFalsa.Comentario = "No hay raìz";
                 ReglaFalsa.Converge = "No";
-                ReglaFalsa.Iteraciones = cont.ToString();
+                ReglaFalsa.Iteraciones = contador.ToString();
             }
             else
             {
-                // double Xr=(funcionXderecha*Xizquierda-funcionXizquierda*Xderecha)/funcionXDerecha-funcionXizquierda)
+                double xr = (funcionxd * xi - funcionxi * xd) / (funcionxd - funcionxi);
+                double error = CalcularError(xr, xAnt);
+                Argument x = new Argument($"x={xr}");
+                Expression nuevaExpresion = new Expression($"funcion(x)", funcion, x);
+                ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
+                while (resultado.Resultado != false)
+                {
+                    if (nuevaExpresion.calculate() * expresionxi.calculate() < 0)
+                    {
+                        xd = xr;
+                    }
+                    else
+                    {
+                        xi = xr;
+                        expresionxi = new Expression($"funcion({xi})", funcion);
+                    }
+                    xAnt = xr;
+                    xr = (xi + xd) / 2;
+                    error = CalcularError(xr, xAnt);
+                    contador += 1;
+                    x = new Argument($"nuevoArgumento={xr}");
+                    nuevaExpresion = new Expression($"funcion(x)", funcion, x);
+                    resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
+                }
+                ReglaFalsa.Converge = "Si";
+                ReglaFalsa.Comentario = resultado.Comentario;
+                ReglaFalsa.Error = error.ToString();
+                ReglaFalsa.Raiz = xr.ToString();
+                ReglaFalsa.Iteraciones = contador.ToString();
             }
-            return null;
-
+            return ReglaFalsa;
         }
     }
 }
-
