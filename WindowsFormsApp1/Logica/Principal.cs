@@ -10,6 +10,7 @@ namespace Logica
 {
     public class Principal
     {
+        ///////////////////////////////// Cálculo 
         public Respuesta RealizarCalculo(Function funcion, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta respuesta = new Respuesta();
@@ -71,8 +72,10 @@ namespace Logica
                         xr = (xi + xd) / 2;
                         error = CalcularError(xr, xAnt);
                         contador += 1;
-                        x = new Argument($"nuevoArgumento={xr}");
-                        nuevaExpresion = new Expression($"funcion(x)", funcion, x);
+                        
+                        x = new Argument($"x={Convert.ToInt32(xr)}");
+                        nuevaExpresion = new Expression($"funcion(x)", funcion,x);
+
                         resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
 
                     }
@@ -86,10 +89,12 @@ namespace Logica
             }
         }
 
+        ////////////////////////////////////////////// Comprobación /////////////////////////////////
         private ResultadoComprobacion ComprobarCondiciones(double tolerancia, int iteraciones, int contador, Expression funcion, double error)
         {
             ResultadoComprobacion resultado = new ResultadoComprobacion();
-            if (funcion.calculate() == 0)
+            double valor = funcion.calculate();
+            if (valor == 0)
             {
                 resultado.Resultado = false;
                 resultado.Comentario = "xr es la raiz";
@@ -120,26 +125,25 @@ namespace Logica
                             resultado.Resultado = true;
                         }
                     }
-
                 }
-
             }
             return resultado;
         }
 
+        /////////////////////////////////// Cálculo error relativo //////////////////////////////////////
         private double CalcularError(double xr, double xAnt)
         {
-            return Math.Abs((xr - xAnt) / xr);
+            return (Math.Abs((xr - xAnt) / xr));
         }
 
-        //////////////////////////////// Cálculo regla falsa //////////////////////////////
+        //////////////////////////////// Cálculo regla falsa ////////////////////////////////////////////
         public Respuesta CalcularReglaFalsa(Function funcion, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta ReglaFalsa = new Respuesta();
             int contador = 1;
             double xAnt = 0;
-            Expression expresionxi = new Expression();
-            Expression expresionxd = new Expression();
+            Expression expresionxi = new Expression($"funcion({xi})", funcion);
+            Expression expresionxd = new Expression($"funcion({xd})", funcion);
             double funcionxi = expresionxi.calculate();
             double funcionxd = expresionxd.calculate();
             if (funcionxi * funcionxd == 0)
@@ -156,6 +160,7 @@ namespace Logica
                 }
                 ReglaFalsa.Converge = "Si";
                 ReglaFalsa.Iteraciones = contador.ToString();
+                ReglaFalsa.Error = 1.ToString();
                 return ReglaFalsa;
             }
             else
@@ -165,6 +170,7 @@ namespace Logica
                 ReglaFalsa.Comentario = "No hay raìz";
                 ReglaFalsa.Converge = "No";
                 ReglaFalsa.Iteraciones = contador.ToString();
+                ReglaFalsa.Error = 1.ToString();
             }
             else
             {
@@ -185,11 +191,14 @@ namespace Logica
                         expresionxi = new Expression($"funcion({xi})", funcion);
                     }
                     xAnt = xr;
-                    xr = (xi + xd) / 2;
+                    xr = (funcionxd * xi - funcionxi * xd) / (funcionxd - funcionxi);
                     error = CalcularError(xr, xAnt);
                     contador += 1;
+
                     x = new Argument($"nuevoArgumento={xr}");
                     nuevaExpresion = new Expression($"funcion(x)", funcion, x);
+                    /*x = new Argument($"x={Convert.ToInt64(xr)}");
+                    nuevaExpresion = new Expression($"funcion(x)", funcion, x);*/
                     resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
                 }
                 ReglaFalsa.Converge = "Si";

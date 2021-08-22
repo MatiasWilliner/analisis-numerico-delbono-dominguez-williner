@@ -39,7 +39,6 @@ namespace WindowsFormsApp1
         {
             if (comboBox1.SelectedItem.ToString() == "Bisección")
             {
-                
                 Function funcion = new Function($"funcion(x)={txtFuncion.Text}");
                 double xi = double.Parse(txtPrimerValor.Text);
                 double xd = double.Parse(txtSegundoValor.Text);
@@ -60,6 +59,31 @@ namespace WindowsFormsApp1
                 txtTolerancia.Enabled = false;
                 comboBox1.Text = "";
                 
+            }
+            else
+            {
+                if (comboBox1.SelectedItem.ToString() == "Regla falsa")
+                {
+                    Function funcion = new Function($"funcion(x)={txtFuncion.Text}");
+                    double xi = double.Parse(txtPrimerValor.Text);
+                    double xd = double.Parse(txtSegundoValor.Text);
+                    int numeroIteraciones = int.Parse(txtIteraciones.Text);
+                    double tolerancia = double.Parse(txtTolerancia.Text);
+                    Respuesta resultado = principal.CalcularReglaFalsa(funcion, xi, xd, numeroIteraciones, tolerancia);
+
+                    lblResultadoConvergente.Text = resultado.Converge;
+                    lblResultadoComentario.Text = resultado.Comentario;
+                    lblResultadoRaiz.Text = resultado.Raiz;
+                    lblResultadoIteraciones.Text = resultado.Iteraciones;
+                    lblResultadoError.Text = resultado.Error;
+
+                    txtFuncion.Enabled = false;
+                    txtPrimerValor.Enabled = false;
+                    txtSegundoValor.Enabled = false;
+                    txtIteraciones.Enabled = false;
+                    txtTolerancia.Enabled = false;
+                    comboBox1.Text = "";
+                }
             }
             
         }
