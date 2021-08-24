@@ -39,12 +39,12 @@ namespace WindowsFormsApp1
         {
             if (comboBox1.SelectedItem.ToString() == "Bisección")
             {
-                Function funcion = new Function($"funcion(x)={txtFuncion.Text}");
+                Function f = new Function("f(x)" + "=" + txtFuncion.Text);
                 double xi = double.Parse(txtPrimerValor.Text);
                 double xd = double.Parse(txtSegundoValor.Text);
                 int numeroIteraciones = int.Parse(txtIteraciones.Text);
                 double tolerancia = double.Parse(txtTolerancia.Text);
-                Respuesta resultado=principal.RealizarCalculo(funcion,xi,xd,numeroIteraciones,tolerancia);
+                Respuesta resultado=principal.RealizarCalculo(f,xi,xd,numeroIteraciones,tolerancia);
 
                 lblResultadoConvergente.Text = resultado.Converge;
                 lblResultadoComentario.Text = resultado.Comentario;
@@ -64,12 +64,13 @@ namespace WindowsFormsApp1
             {
                 if (comboBox1.SelectedItem.ToString() == "Regla falsa")
                 {
-                    Function funcion = new Function($"funcion(x)={txtFuncion.Text}");
+                    //abs(x^2-4)+2*x
+                    Function f = new Function("f(x)"+"="+txtFuncion.Text);
                     double xi = double.Parse(txtPrimerValor.Text);
                     double xd = double.Parse(txtSegundoValor.Text);
                     int numeroIteraciones = int.Parse(txtIteraciones.Text);
                     double tolerancia = double.Parse(txtTolerancia.Text);
-                    Respuesta resultado = principal.CalcularReglaFalsa(funcion, xi, xd, numeroIteraciones, tolerancia);
+                    Respuesta resultado = principal.CalcularReglaFalsa(f, xi, xd, numeroIteraciones, tolerancia);
 
                     lblResultadoConvergente.Text = resultado.Converge;
                     lblResultadoComentario.Text = resultado.Comentario;
