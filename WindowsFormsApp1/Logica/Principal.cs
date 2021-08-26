@@ -11,8 +11,8 @@ namespace Logica
 {
     public class Principal
     {
-        ///////////////////////////////// Cálculo 
-        public Respuesta RealizarCalculo(Function f, double xi, double xd, int numeroIteraciones, double tolerancia)
+        ///////////////////////////////// Bisección ////////////////////////////////////////////
+        public Respuesta CalcularBiseccion(Function f, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta respuesta = new Respuesta();
             int contador = 0;
@@ -134,7 +134,7 @@ namespace Logica
             return (Math.Abs((xr - xAnt) / xr));
         }
 
-        //////////////////////////////// Cálculo regla falsa ////////////////////////////////////////////
+        //////////////////////////////// Regla falsa ////////////////////////////////////////////
         public Respuesta CalcularReglaFalsa(Function f, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
             Respuesta respuesta = new Respuesta();
@@ -176,32 +176,6 @@ namespace Logica
                 }
                 else
                 {
-
-                    /*double xr = ((funcionxd * xi) - (funcionxi * xd)) / (funcionxd - funcionxi);
-                    double error = CalcularError(xr, xAnt);
-                    contador += 1;
-                    Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                    ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
-                    while (resultado.Resultado != false)
-                    {
-                        if (nuevaExpresion.calculate() * expresionxi.calculate() < 0)
-                        {
-                            xd = xr;
-                            expresionxi = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                        }
-                        else
-                        {
-                            xi = xr;
-                            expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                        }
-                        xAnt = xr;
-                        funcionxi = expresionxi.calculate();
-                        funcionxd = expresionxd.calculate();
-                        xr = ((funcionxd * xi) - (funcionxi * xd)) / (funcionxd - funcionxi);
-                        error = CalcularError(xr, xAnt);
-                        contador += 1;
-                        nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                        resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);*/
                 
                     double xr = ((funcionxd * xi) - (funcionxi * xd)) / (funcionxd - funcionxi);
                     double error = CalcularError(xr, xAnt);
@@ -238,6 +212,124 @@ namespace Logica
                 }
                 return respuesta;
             }
+        }
+
+        ///////////////////////////////// Newton Raphson /////////////////////////////////
+        public Respuesta CalcularNewtonRaphson(Function f, double xi, int iteraciones, double tolerancia)
+        {
+            Respuesta respuesta = new Respuesta();
+            int contador = 0;
+            double xAnt = 0;
+            Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionxitolerancia = new Expression("f(" + (xi + tolerancia).ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            if (expresionxi.calculate()<tolerancia)
+            {
+                respuesta.Raiz = xi.ToString();
+                respuesta.Comentario = "xi es la raíz";
+                respuesta.Converge = "Si";
+                respuesta.Error = "-";
+                respuesta.Iteraciones = contador.ToString();
+            }
+            else
+            {
+                double derivadaXi = (expresionxitolerancia.calculate() - expresionxi.calculate()) / tolerancia;
+                if (derivadaXi == 0)
+                {
+                    respuesta.Raiz = "-";
+                    respuesta.Comentario = "No hay raiz";
+                    respuesta.Converge = "No";
+                    respuesta.Error = "-";
+                    respuesta.Iteraciones = contador.ToString();
+                }
+                else
+                {
+                    double xr = xi - (expresionxi.calculate() / derivadaXi);
+                    contador += 1;
+                    double error = CalcularError(xr, xAnt);
+                    Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                    while (resultado.Resultado != false)
+                    {
+                        xAnt = xr;
+                        xi = xr;
+                        contador += 1;
+                        expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                        expresionxitolerancia = new Expression("f(" + (xi + tolerancia).ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                        derivadaXi = (expresionxitolerancia.calculate() - expresionxi.calculate()) / tolerancia;
+                        xr = xi - (expresionxi.calculate() / derivadaXi);
+                        error = CalcularError(xr, xAnt);
+                        nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                        resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                    }
+                    respuesta.Raiz = xr.ToString();
+                    respuesta.Comentario = resultado.Comentario;
+                    respuesta.Converge = "Si";
+                    respuesta.Error = error.ToString();
+                    respuesta.Iteraciones = contador.ToString();
+                }
+            }
+            
+            return respuesta;
+        }
+
+        //////////////////////////////// Secante ///////////////////////////////////
+        public Respuesta CalcularSecante(Function f, double xi, double xd,int iteraciones, double tolerancia)
+        {
+            //xd=xi
+            //xi=xi+1
+            Respuesta respuesta = new Respuesta();
+            int contador = 0;
+            double xAnt = 0;
+            Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            if (expresionxd.calculate()==expresionxi.calculate())
+            {
+                respuesta.Raiz = "-";
+                respuesta.Comentario = "No hay raiz";
+                respuesta.Converge = "No";
+                respuesta.Error = "-";
+                respuesta.Iteraciones = contador.ToString();
+            }
+            else
+            {
+                double xr = (expresionxi.calculate()*xd-expresionxd.calculate()*xi)/(expresionxi.calculate()-expresionxd.calculate());
+                contador += 1;
+                double error = CalcularError(xr, xAnt);
+                Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                while (resultado.Resultado != false)
+                {
+                    xAnt = xr;
+                    xd = xi;
+                    xi = xr;
+
+                    /*if (xr>xd)
+                    {
+                        xAnt = xr;
+                        xi = xr;
+                    }
+                    else
+                    {
+                        xAnt = xr;
+                        xd = xi;
+                        xi = xr;
+                    }*/
+                    
+                    contador += 1;
+                    expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                    error = CalcularError(xr, xAnt);
+                    nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                }
+                respuesta.Raiz = xr.ToString();
+                respuesta.Comentario = resultado.Comentario;
+                respuesta.Converge = "Si";
+                respuesta.Error = error.ToString();
+                respuesta.Iteraciones = contador.ToString();
+            }
+            return respuesta;
         }
     }
 }
