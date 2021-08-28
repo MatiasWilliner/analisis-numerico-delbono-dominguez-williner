@@ -37,7 +37,7 @@ namespace Logica
                 }
                 respuesta.Converge = "Si";
                 respuesta.Iteraciones = contador.ToString();
-                respuesta.Error = 1.ToString();
+                respuesta.Error = "-";
 
                 return respuesta;
             }
@@ -49,7 +49,7 @@ namespace Logica
                     respuesta.Comentario = "No hay raiz entre los valores";
                     respuesta.Converge = "No";
                     respuesta.Iteraciones = contador.ToString();
-                    respuesta.Error = 1.ToString();
+                    respuesta.Error = "-";
                 }
                 else
                 {
@@ -87,53 +87,6 @@ namespace Logica
             }
         }
 
-        ////////////////////////////////////////////// Comprobación /////////////////////////////////
-        private ResultadoComprobacion ComprobarCondiciones(double tolerancia, int iteraciones, int contador, Expression funcion, double error)
-        {
-            ResultadoComprobacion resultado = new ResultadoComprobacion();
-            double valor = funcion.calculate();
-            if (valor == 0)
-            {
-                resultado.Resultado = false;
-                resultado.Comentario = "xr es la raiz";
-            }
-            else
-            {
-                if (error < tolerancia)
-                {
-                    resultado.Comentario = "El error es menor a la tolerancia";
-                    resultado.Resultado = false;
-                }
-                else
-                {
-                    if (contador >= iteraciones)
-                    {
-                        resultado.Comentario = "Se superó el número de iteraciones";
-                        resultado.Resultado = false;
-                    }
-                    else
-                    {
-                        if (Math.Abs(funcion.calculate()) < tolerancia)
-                        {
-                            resultado.Comentario = "El valor es menor a la tolerancia";
-                            resultado.Resultado = false;
-                        }
-                        else
-                        {
-                            resultado.Resultado = true;
-                        }
-                    }
-                }
-            }
-            return resultado;
-        }
-
-        /////////////////////////////////// Cálculo error relativo //////////////////////////////////////
-        private double CalcularError(double xr, double xAnt)
-        {
-            return (Math.Abs((xr - xAnt) / xr));
-        }
-
         //////////////////////////////// Regla falsa ////////////////////////////////////////////
         public Respuesta CalcularReglaFalsa(Function f, double xi, double xd, int numeroIteraciones, double tolerancia)
         {
@@ -160,7 +113,7 @@ namespace Logica
                 }
                 respuesta.Converge = "Si";
                 respuesta.Iteraciones = contador.ToString();
-                respuesta.Error = 1.ToString();
+                respuesta.Error = "-";
 
                 return respuesta;
             }
@@ -172,7 +125,7 @@ namespace Logica
                     respuesta.Comentario = "No hay raiz entre los valores";
                     respuesta.Converge = "No";
                     respuesta.Iteraciones = contador.ToString();
-                    respuesta.Error = 1.ToString();
+                    respuesta.Error = "-";
                 }
                 else
                 {
@@ -222,7 +175,7 @@ namespace Logica
             double xAnt = 0;
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxitolerancia = new Expression("f(" + (xi + tolerancia).ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            if (expresionxi.calculate()<tolerancia)
+            if (expresionxi.calculate()==0)
             {
                 respuesta.Raiz = xi.ToString();
                 respuesta.Comentario = "xi es la raíz";
@@ -263,12 +216,18 @@ namespace Logica
                     }
                     respuesta.Raiz = xr.ToString();
                     respuesta.Comentario = resultado.Comentario;
-                    respuesta.Converge = "Si";
+                    if (resultado.Comentario== "Se superó el número de iteraciones")
+                    {
+                        respuesta.Converge = "No";
+                    }
+                    else
+                    {
+                        respuesta.Converge = "Si";
+                    }
                     respuesta.Error = error.ToString();
                     respuesta.Iteraciones = contador.ToString();
                 }
             }
-            
             return respuesta;
         }
 
@@ -282,54 +241,133 @@ namespace Logica
             double xAnt = 0;
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            if (expresionxd.calculate()==expresionxi.calculate())
+            
+            if (expresionxi.calculate()==0)
             {
-                respuesta.Raiz = "-";
-                respuesta.Comentario = "No hay raiz";
-                respuesta.Converge = "No";
+                respuesta.Raiz = xi.ToString();
+                respuesta.Comentario = "xi es la raiz";
+                respuesta.Converge = "Si";
                 respuesta.Error = "-";
                 respuesta.Iteraciones = contador.ToString();
             }
             else
             {
-                double xr = (expresionxi.calculate()*xd-expresionxd.calculate()*xi)/(expresionxi.calculate()-expresionxd.calculate());
-                contador += 1;
-                double error = CalcularError(xr, xAnt);
-                Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
-                while (resultado.Resultado != false)
+                if (expresionxd.calculate()==0)
                 {
-                    xAnt = xr;
-                    xd = xi;
-                    xi = xr;
-
-                    /*if (xr>xd)
+                    respuesta.Raiz = xd.ToString();
+                    respuesta.Comentario = "xd es la raiz";
+                    respuesta.Converge = "Si";
+                    respuesta.Error = "-";
+                    respuesta.Iteraciones = contador.ToString();
+                }
+                else
+                {
+                    if (expresionxd.calculate() == expresionxi.calculate())
                     {
-                        xAnt = xr;
-                        xi = xr;
+                        respuesta.Raiz = "-";
+                        respuesta.Comentario = "No hay raiz";
+                        respuesta.Converge = "No";
+                        respuesta.Error = "-";
+                        respuesta.Iteraciones = contador.ToString();
                     }
                     else
                     {
-                        xAnt = xr;
-                        xd = xi;
-                        xi = xr;
-                    }*/
+                        double xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                        contador += 1;
+                        double error = CalcularError(xr, xAnt);
+                        Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                        ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                        while (resultado.Resultado != false)
+                        {
+                            xAnt = xr;
+                            xd = xi;
+                            xi = xr;
+
+                            /*if (xr>xd)
+                            {
+                                xAnt = xr;
+                                xi = xr;
+                            }
+                            else
+                            {
+                                xAnt = xr;
+                                xd = xi;
+                                xi = xr;
+                            }*/
+
+                            contador += 1;
+                            expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                            expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                            xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                            error = CalcularError(xr, xAnt);
+                            nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                            resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
+                        }
+                        respuesta.Raiz = xr.ToString();
+                        respuesta.Comentario = resultado.Comentario;
+                        if (respuesta.Comentario == "Se superó el número de iteraciones")
+                        {
+                            respuesta.Converge = "No";
+                        }
+                        else
+                        {
+                            respuesta.Converge = "Si";
+                        }
+                        respuesta.Error = error.ToString();
+                        respuesta.Iteraciones = contador.ToString();
+                    }
                     
-                    contador += 1;
-                    expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                    expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                    xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
-                    error = CalcularError(xr, xAnt);
-                    nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                    resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
                 }
-                respuesta.Raiz = xr.ToString();
-                respuesta.Comentario = resultado.Comentario;
-                respuesta.Converge = "Si";
-                respuesta.Error = error.ToString();
-                respuesta.Iteraciones = contador.ToString();
+               
             }
             return respuesta;
+        }
+
+        ////////////////////////////////////////////// Comprobación /////////////////////////////////
+        private ResultadoComprobacion ComprobarCondiciones(double tolerancia, int iteraciones, int contador, Expression funcion, double error)
+        {
+            ResultadoComprobacion resultado = new ResultadoComprobacion();
+            double valor = funcion.calculate();
+            if (valor == 0)
+            {
+                resultado.Resultado = false;
+                resultado.Comentario = "xr es la raiz";
+            }
+            else
+            {
+                if (error < tolerancia)
+                {
+                    resultado.Comentario = "El error es menor a la tolerancia";
+                    resultado.Resultado = false;
+                }
+                else
+                {
+                    if (contador >= iteraciones)
+                    {
+                        resultado.Comentario = "Se superó el número de iteraciones";
+                        resultado.Resultado = false;
+                    }
+                    else
+                    {
+                        if (Math.Abs(funcion.calculate()) < tolerancia)
+                        {
+                            resultado.Comentario = "El valor es menor a la tolerancia";
+                            resultado.Resultado = false;
+                        }
+                        else
+                        {
+                            resultado.Resultado = true;
+                        }
+                    }
+                }
+            }
+            return resultado;
+        }
+
+        /////////////////////////////////// Cálculo error relativo //////////////////////////////////////
+        private double CalcularError(double xr, double xAnt)
+        {
+            return (Math.Abs((xr - xAnt) / xr));
         }
     }
 }

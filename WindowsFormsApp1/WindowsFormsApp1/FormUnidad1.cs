@@ -22,7 +22,6 @@ namespace WindowsFormsApp1
             comboBox1.Items.Add("Regla falsa");
             comboBox1.Items.Add("Newton Raphson");
             comboBox1.Items.Add("Secante");
-
             txtFuncion.Enabled = false;
             txtPrimerValor.Enabled = false;
             txtSegundoValor.Enabled = false;
@@ -40,105 +39,92 @@ namespace WindowsFormsApp1
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem.ToString() == "Bisección")
+            switch (comboBox1.SelectedItem.ToString())
             {
-                Function f = new Function("f(x)" + "=" + txtFuncion.Text);
-                double xi = double.Parse(txtPrimerValor.Text);
-                double xd = double.Parse(txtSegundoValor.Text);
-                int numeroIteraciones = int.Parse(txtIteraciones.Text);
-                double tolerancia = double.Parse(txtTolerancia.Text);
-                Respuesta resultado=principal.CalcularBiseccion(f,xi,xd,numeroIteraciones,tolerancia);
-
-                lblResultadoConvergente.Text = resultado.Converge;
-                lblResultadoComentario.Text = resultado.Comentario;
-                lblResultadoRaiz.Text = resultado.Raiz;
-                lblResultadoIteraciones.Text = resultado.Iteraciones;
-                lblResultadoError.Text = resultado.Error;
-
-                txtFuncion.Enabled = false;
-                txtPrimerValor.Enabled = false;
-                txtSegundoValor.Enabled = false;
-                txtIteraciones.Enabled = false;
-                txtTolerancia.Enabled = false;
-                comboBox1.Text = "";
-                
-            }
-            else
-            {
-                if (comboBox1.SelectedItem.ToString() == "Regla falsa")
-                {
-                    //abs(x^2-4)+2*x
-                    Function f = new Function("f(x)"+"="+txtFuncion.Text);
+                case "Bisección":
+                    Function f = new Function("f(x)" + "=" + txtFuncion.Text);
                     double xi = double.Parse(txtPrimerValor.Text);
                     double xd = double.Parse(txtSegundoValor.Text);
                     int numeroIteraciones = int.Parse(txtIteraciones.Text);
                     double tolerancia = double.Parse(txtTolerancia.Text);
-                    Respuesta resultado = principal.CalcularReglaFalsa(f, xi, xd, numeroIteraciones, tolerancia);
-
+                    Respuesta resultado = principal.CalcularBiseccion(f, xi, xd, numeroIteraciones, tolerancia);
                     lblResultadoConvergente.Text = resultado.Converge;
                     lblResultadoComentario.Text = resultado.Comentario;
                     lblResultadoRaiz.Text = resultado.Raiz;
                     lblResultadoIteraciones.Text = resultado.Iteraciones;
                     lblResultadoError.Text = resultado.Error;
-
                     txtFuncion.Enabled = false;
                     txtPrimerValor.Enabled = false;
                     txtSegundoValor.Enabled = false;
                     txtIteraciones.Enabled = false;
                     txtTolerancia.Enabled = false;
                     comboBox1.Text = "";
-                }
-                else
-                {
-                    if (comboBox1.SelectedItem.ToString() == "Newton Raphson")
-                    {
-                        Function f = new Function("f(x)" + "=" + txtFuncion.Text);
-                        double xi = double.Parse(txtPrimerValor.Text);
-                        int numeroIteraciones = int.Parse(txtIteraciones.Text);
-                        double tolerancia = double.Parse(txtTolerancia.Text);
-                        Respuesta resultado = principal.CalcularNewtonRaphson(f, xi, numeroIteraciones, tolerancia);
+                    break;
 
-                        lblResultadoConvergente.Text = resultado.Converge;
-                        lblResultadoComentario.Text = resultado.Comentario;
-                        lblResultadoRaiz.Text = resultado.Raiz;
-                        lblResultadoIteraciones.Text = resultado.Iteraciones;
-                        lblResultadoError.Text = resultado.Error;
+                case "Regla falsa":
+                    //abs(x^2-4)+2*x
+                    //ln(x)+(1/x)-3
+                    f = new Function("f(x)" + "=" + txtFuncion.Text);
+                    xi = double.Parse(txtPrimerValor.Text);
+                    xd = double.Parse(txtSegundoValor.Text);
+                    numeroIteraciones = int.Parse(txtIteraciones.Text);
+                    tolerancia = double.Parse(txtTolerancia.Text);
+                    resultado = principal.CalcularReglaFalsa(f, xi, xd, numeroIteraciones, tolerancia);
+                    lblResultadoConvergente.Text = resultado.Converge;
+                    lblResultadoComentario.Text = resultado.Comentario;
+                    lblResultadoRaiz.Text = resultado.Raiz;
+                    lblResultadoIteraciones.Text = resultado.Iteraciones;
+                    lblResultadoError.Text = resultado.Error;
+                    txtFuncion.Enabled = false;
+                    txtPrimerValor.Enabled = false;
+                    txtSegundoValor.Enabled = false;
+                    txtIteraciones.Enabled = false;
+                    txtTolerancia.Enabled = false;
+                    comboBox1.Text = "";
+                    break;
 
-                        txtFuncion.Enabled = false;
-                        txtPrimerValor.Enabled = false;
-                        txtSegundoValor.Enabled = false;
-                        txtIteraciones.Enabled = false;
-                        txtTolerancia.Enabled = false;
-                        comboBox1.Text = "";
-                    }
-                    else
-                    {
-                        if (comboBox1.Text=="Secante")
-                        {
-                            Function f = new Function("f(x)" + "=" + txtFuncion.Text);
-                            double xi = double.Parse(txtPrimerValor.Text);
-                            double xd = double.Parse(txtSegundoValor.Text);
-                            int numeroIteraciones = int.Parse(txtIteraciones.Text);
-                            double tolerancia = double.Parse(txtTolerancia.Text);
-                            Respuesta resultado = principal.CalcularSecante(f, xi, xd, numeroIteraciones, tolerancia);
+                case "Newton Raphson":
+                    f = new Function("f(x)" + "=" + txtFuncion.Text);
+                    xi = double.Parse(txtPrimerValor.Text);
+                    numeroIteraciones = int.Parse(txtIteraciones.Text);
+                    tolerancia = double.Parse(txtTolerancia.Text);
+                    resultado = principal.CalcularNewtonRaphson(f, xi, numeroIteraciones, tolerancia);
+                    lblResultadoConvergente.Text = resultado.Converge;
+                    lblResultadoComentario.Text = resultado.Comentario;
+                    lblResultadoRaiz.Text = resultado.Raiz;
+                    lblResultadoIteraciones.Text = resultado.Iteraciones;
+                    lblResultadoError.Text = resultado.Error;
+                    txtFuncion.Enabled = false;
+                    txtPrimerValor.Enabled = false;
+                    txtSegundoValor.Enabled = false;
+                    txtIteraciones.Enabled = false;
+                    txtTolerancia.Enabled = false;
+                    comboBox1.Text = "";
+                    break;
 
-                            lblResultadoConvergente.Text = resultado.Converge;
-                            lblResultadoComentario.Text = resultado.Comentario;
-                            lblResultadoRaiz.Text = resultado.Raiz;
-                            lblResultadoIteraciones.Text = resultado.Iteraciones;
-                            lblResultadoError.Text = resultado.Error;
+                case "Secante":
+                    f = new Function("f(x)" + "=" + txtFuncion.Text);
+                    xi = double.Parse(txtPrimerValor.Text);
+                    xd = double.Parse(txtSegundoValor.Text);
+                    numeroIteraciones = int.Parse(txtIteraciones.Text);
+                    tolerancia = double.Parse(txtTolerancia.Text);
+                    resultado = principal.CalcularSecante(f, xi, xd, numeroIteraciones, tolerancia);
+                    lblResultadoConvergente.Text = resultado.Converge;
+                    lblResultadoComentario.Text = resultado.Comentario;
+                    lblResultadoRaiz.Text = resultado.Raiz;
+                    lblResultadoIteraciones.Text = resultado.Iteraciones;
+                    lblResultadoError.Text = resultado.Error;
+                    txtFuncion.Enabled = false;
+                    txtPrimerValor.Enabled = false;
+                    txtSegundoValor.Enabled = false;
+                    txtIteraciones.Enabled = false;
+                    txtTolerancia.Enabled = false;
+                    comboBox1.Text = "";
+                    break;
 
-                            txtFuncion.Enabled = false;
-                            txtPrimerValor.Enabled = false;
-                            txtSegundoValor.Enabled = false;
-                            txtIteraciones.Enabled = false;
-                            txtTolerancia.Enabled = false;
-                            comboBox1.Text = "";
-                        }
-                    }
-                }
+                default:
+                    break;
             }
-            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -148,7 +134,6 @@ namespace WindowsFormsApp1
             txtSegundoValor.Enabled = true;
             txtIteraciones.Enabled = true;
             txtTolerancia.Enabled = true;
-
             if (comboBox1.Text == "Newton Raphson")
             {
                 txtSegundoValor.Visible = false;
