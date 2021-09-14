@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using org.mariuszgromada.math.mxparser;
 using Logica;
 
+
 namespace WindowsFormsApp1
 {
     public partial class FormUnidad1 : Form
@@ -104,8 +105,10 @@ namespace WindowsFormsApp1
 
                 case "Secante":
                     f = new Function("f(x)" + "=" + txtFuncion.Text);
-                    xi = double.Parse(txtPrimerValor.Text);
-                    xd = double.Parse(txtSegundoValor.Text);
+                    //xi = double.Parse(txtPrimerValor.Text);
+                    //xd = double.Parse(txtSegundoValor.Text);
+                    xd = double.Parse(txtPrimerValor.Text);
+                    xi = double.Parse(txtSegundoValor.Text);
                     numeroIteraciones = int.Parse(txtIteraciones.Text);
                     tolerancia = double.Parse(txtTolerancia.Text);
                     resultado = principal.CalcularSecante(f, xi, xd, numeroIteraciones, tolerancia);

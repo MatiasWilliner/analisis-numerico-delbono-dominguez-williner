@@ -77,11 +77,26 @@ namespace Logica
                         resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
 
                     }
-                    respuesta.Converge = "Si";
-                    respuesta.Comentario = resultado.Comentario;
+                    if (resultado.Comentario == "Se superó el número de iteraciones")
+                    {
+                        respuesta.Converge = "No";
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = "-";
+                        respuesta.Raiz = "-";
+                        respuesta.Iteraciones = contador.ToString();
+                    }
+                    else
+                    {
+                        respuesta.Converge = "Si";
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = error.ToString();
+                        respuesta.Raiz = xr.ToString("###0.0000");
+                        respuesta.Iteraciones = contador.ToString();
+                    }
+                    /*respuesta.Comentario = resultado.Comentario;
                     respuesta.Error = error.ToString();
-                    respuesta.Raiz = xr.ToString();
-                    respuesta.Iteraciones = contador.ToString();
+                    respuesta.Raiz = xr.ToString("####.0000");
+                    respuesta.Iteraciones = contador.ToString();*/
                 }
                 return respuesta;
             }
@@ -157,11 +172,27 @@ namespace Logica
                         nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                         resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
                     }
-                    respuesta.Converge = "Si";
-                    respuesta.Comentario = resultado.Comentario;
+
+                    if (resultado.Comentario == "Se superó el número de iteraciones")
+                    {
+                        respuesta.Converge = "No";
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = "-";
+                        respuesta.Raiz = "-";
+                        respuesta.Iteraciones = contador.ToString();
+                    }
+                    else
+                    {
+                        respuesta.Converge = "Si";
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = error.ToString();
+                        respuesta.Raiz = xr.ToString("###0.0000");
+                        respuesta.Iteraciones = contador.ToString();
+                    }
+                    /*respuesta.Comentario = resultado.Comentario;
                     respuesta.Error = error.ToString();
-                    respuesta.Raiz = xr.ToString();
-                    respuesta.Iteraciones = contador.ToString();
+                    respuesta.Raiz = xr.ToString("####.0000");
+                    respuesta.Iteraciones = contador.ToString();*/
                 }
                 return respuesta;
             }
@@ -214,18 +245,23 @@ namespace Logica
                         nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                         resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
                     }
-                    respuesta.Raiz = xr.ToString();
-                    respuesta.Comentario = resultado.Comentario;
                     if (resultado.Comentario== "Se superó el número de iteraciones")
                     {
                         respuesta.Converge = "No";
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = "-";
+                        respuesta.Raiz = "-";
+                        respuesta.Iteraciones = contador.ToString();
                     }
                     else
                     {
                         respuesta.Converge = "Si";
+                        respuesta.Raiz = xr.ToString("###0.0000");
+                        respuesta.Comentario = resultado.Comentario;
+                        respuesta.Error = error.ToString();
+                        respuesta.Iteraciones = contador.ToString();
                     }
-                    respuesta.Error = error.ToString();
-                    respuesta.Iteraciones = contador.ToString();
+                    
                 }
             }
             return respuesta;
@@ -272,7 +308,8 @@ namespace Logica
                     }
                     else
                     {
-                        double xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                        //double xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                        double xr = (expresionxd.calculate() * xi - expresionxi.calculate() * xd) / (expresionxd.calculate() - expresionxi.calculate());
                         contador += 1;
                         double error = CalcularError(xr, xAnt);
                         Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
@@ -283,42 +320,38 @@ namespace Logica
                             xd = xi;
                             xi = xr;
 
-                            /*if (xr>xd)
-                            {
-                                xAnt = xr;
-                                xi = xr;
-                            }
-                            else
-                            {
-                                xAnt = xr;
-                                xd = xi;
-                                xi = xr;
-                            }*/
+                            /*xAnt = xr;
+                            xi = xd;
+                            xd = xr;*/
 
-                            contador += 1;
                             expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                             expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-                            xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                            //xr = (expresionxi.calculate() * xd - expresionxd.calculate() * xi) / (expresionxi.calculate() - expresionxd.calculate());
+                            xr = (expresionxd.calculate() * xi - expresionxi.calculate() * xd) / (expresionxd.calculate() - expresionxi.calculate());
+                            contador += 1;
                             error = CalcularError(xr, xAnt);
                             nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                             resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
                         }
-                        respuesta.Raiz = xr.ToString();
-                        respuesta.Comentario = resultado.Comentario;
-                        if (respuesta.Comentario == "Se superó el número de iteraciones")
+                        
+                        if (resultado.Comentario == "Se superó el número de iteraciones")
                         {
                             respuesta.Converge = "No";
+                            respuesta.Raiz = "-";
+                            respuesta.Comentario = resultado.Comentario;
+                            respuesta.Error = "-";
+                            respuesta.Iteraciones = contador.ToString();
                         }
                         else
                         {
                             respuesta.Converge = "Si";
+                            respuesta.Raiz = xr.ToString("###0.0000");
+                            respuesta.Comentario = resultado.Comentario;
+                            respuesta.Error = error.ToString();
+                            respuesta.Iteraciones = contador.ToString();
                         }
-                        respuesta.Error = error.ToString();
-                        respuesta.Iteraciones = contador.ToString();
                     }
-                    
                 }
-               
             }
             return respuesta;
         }
