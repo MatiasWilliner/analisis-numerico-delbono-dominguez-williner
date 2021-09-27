@@ -148,5 +148,7 @@ namespace WindowsFormsApp1
                 lblSegundoValor.Visible = true;
             }
         }
+
+        
     }
 }

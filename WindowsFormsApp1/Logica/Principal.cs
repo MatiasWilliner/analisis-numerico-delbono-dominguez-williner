@@ -402,5 +402,11 @@ namespace Logica
         {
             return (Math.Abs((xr - xAnt) / xr));
         }
+
+        /////////////////////////////////// Cálculo Gauss Jordan ////////////////////////////////////////
+        public void CaclularGaussJordan(string [,] arreglo)
+        {
+            
+        }
     }
 }

@@ -28,3 +28,4 @@ C:\Users\Usuario\Desktop\cosas universidad\Nuevo\Análisis numérico\Programa an
 C:\Users\Usuario\Desktop\cosas universidad\Nuevo\Análisis numérico\Programa analisis numerico final\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
 C:\Users\Usuario\Desktop\cosas universidad\Nuevo\Análisis numérico\Programa analisis numerico final\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 C:\Users\Usuario\Desktop\cosas universidad\Nuevo\Análisis numérico\Programa analisis numerico final\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\Usuario\Desktop\cosas universidad\Nuevo\Análisis numérico\Programa analisis numerico\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.FormUnidad2.resources

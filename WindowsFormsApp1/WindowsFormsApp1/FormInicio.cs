@@ -32,7 +32,9 @@ namespace WindowsFormsApp1
 
         private void btnUnidad2_Click(object sender, EventArgs e)
         {
-
+            FormUnidad2 unidad2 = new FormUnidad2();
+            unidad2.Show();
+            this.Visible = false;
         }
     }
 }

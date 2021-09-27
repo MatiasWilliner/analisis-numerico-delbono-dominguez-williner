@@ -61,6 +61,12 @@
     <Compile Include="FormUnidad1.Designer.cs">
       <DependentUpon>FormUnidad1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormUnidad2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUnidad2.Designer.cs">
+      <DependentUpon>FormUnidad2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormInicio.resx">
@@ -68,6 +74,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormUnidad1.resx">
       <DependentUpon>FormUnidad1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUnidad2.resx">
+      <DependentUpon>FormUnidad2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
