@@ -9,7 +9,8 @@ namespace Logica
     public class RespuestaUnidad2
     {
         public bool Posible { get; set; }
-        public List<double> valores { get; set; }
-        public string Iteraciones { get; set; }
+        public string Comentario { get; set; }
+        public List<double> Valores { get; set; }
+        public int Iteraciones { get; set; }
     }
 }

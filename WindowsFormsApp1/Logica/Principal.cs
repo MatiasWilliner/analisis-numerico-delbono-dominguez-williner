@@ -428,11 +428,13 @@ namespace Logica
             List<double> listaResultado = ObtenerResultados(arreglo, tamaño);
             RespuestaUnidad2 respuesta = new RespuestaUnidad2();
             respuesta.Posible = true;
-            respuesta.Iteraciones = 0.ToString();
-            respuesta.valores = listaResultado;
+            respuesta.Iteraciones = 0;
+            respuesta.Valores = listaResultado;
             return respuesta;
             //MessageBox.Show($"Resultados {arreglo[]}");
         }
+
+        /////////////////////////////////////// Obtener resultados de matriz /////////////////////////////////////
         private List<double> ObtenerResultados(double[,] arreglo, int tamaño)
         {
             List<double> lista = new List<double>();
@@ -442,6 +444,66 @@ namespace Logica
             }
             return lista;
         }
-        
+
+        //////////////////////////////////// Cálculo Gauss Seidel ///////////////////////////////////////
+
+        public RespuestaUnidad2 CalcularGaussSeidel(double[,] arreglo, int tamaño, int iteraciones, double tolerancia)
+        {
+            RespuestaUnidad2 respuesta = new RespuestaUnidad2();
+            double[] resultados = new double[tamaño];
+            double [] vectorAnterior=new double[tamaño];
+            double [] vectorResultado=new double[tamaño];
+            double resultado = 0;
+            int contador = 0;
+            while(iteraciones>=contador)
+            {
+                contador = +1;
+                if (contador>1)
+                {
+                    vectorResultado.CopyTo(vectorAnterior, 0);
+                }
+                for (int i = 0; i < tamaño; i++)
+                {
+                    resultado = arreglo[i,tamaño];
+                    double x = Convert.ToDouble(arreglo[i, i]);
+                    for (int j = 0; j < tamaño; j++)
+                    {
+                        if (i!=j)
+                        {
+                            resultado = resultado - (arreglo[i, j] * vectorResultado[j]);
+                        }
+                    }
+                    x = Convert.ToDouble(resultado) / x;
+                    vectorResultado[i] = x;
+                }
+                for (int i = 0; i < tamaño; i++)
+                {
+                    resultados[i] = Math.Abs(vectorResultado[i] - vectorAnterior[i]);
+                    if (resultados[i]<tolerancia)
+                    {
+                        respuesta.Comentario = "El valor es menor a la tolerancia";
+                        respuesta.Posible = true;
+                        respuesta.Iteraciones = contador;
+                        respuesta.Valores = SacarValores(resultados,tamaño);
+                        return respuesta;
+                    }
+                }
+            }
+            respuesta.Comentario = "Se superó el número de iteraciones";
+            respuesta.Posible = false;
+            respuesta.Iteraciones = contador;
+            return respuesta;
+        }
+
+        //////////////////////////////// Obtener valores de vector ///////////////////////////////////
+        public List<double> SacarValores(double[] resultados, int tamaño)
+        {
+            List<double> listaResultados = new List<double>();
+            for (int i = 0; i < tamaño; i++)
+            {
+                listaResultados.Add(resultados[i]);
+            }
+            return listaResultados;
+        }
     }
 }

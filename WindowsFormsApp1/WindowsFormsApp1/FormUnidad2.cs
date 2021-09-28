@@ -41,10 +41,22 @@ namespace WindowsFormsApp1
                         }
                     }
                     RespuestaUnidad2 respuesta =principal.CaclularGaussJordan(arreglo,tamaño);
-                    MessageBox.Show($"{respuesta.valores}");
-                    
+                    MessageBox.Show($"{respuesta.Valores}");
                     break;
                 case "Gauss Seidel":
+                    int iteraciones = int.Parse(txtIteraciones.Text);
+                    double tolerancia = double.Parse(txtTolerancia.Text);
+                    tamaño = int.Parse(txtDimension.Text);
+                    arreglo = new double[tamaño, tamaño + 1];
+                    for (int i = 0; i < tamaño; i++)
+                    {
+                        for (int j = 0; j < tamaño + 1; j++)
+                        {
+                            Control txtObtenido = panel1.Controls.Find("txt" + i.ToString() + j.ToString(), true).First();
+                            arreglo[i, j] = double.Parse((txtObtenido as TextBox).Text);
+                        }
+                    }
+                    respuesta = principal.CalcularGaussSeidel(arreglo,tamaño,iteraciones,tolerancia);
                     break;
                 default:
                     break;
@@ -81,8 +93,7 @@ namespace WindowsFormsApp1
                         puntoX += 100;
                         txtCreado.Text = (0).ToString();
                         //txtCreado.Text = "".ToString();
-                        txtCreado.Name = $"txt{i}{j}";
-                        
+                        txtCreado.Name = $"txt{i}{j}";  
                     }
                     puntoY += 20;
                 }
@@ -91,7 +102,6 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show(e.ToString());
             }
-            
         }
 
         private void btnRegresar_Click(object sender, EventArgs e)
@@ -100,5 +110,6 @@ namespace WindowsFormsApp1
             FormInicio menu = new FormInicio();
             menu.Show();
         }
+
     }
 }
