@@ -404,7 +404,7 @@ namespace Logica
         }
 
         /////////////////////////////////// Cálculo Gauss Jordan ////////////////////////////////////////
-        public void CaclularGaussJordan(string [,] arreglo)
+        public void CaclularGaussJordan(double [,] arreglo)
         {
             
         }

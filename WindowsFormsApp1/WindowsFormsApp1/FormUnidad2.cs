@@ -31,29 +31,14 @@ namespace WindowsFormsApp1
             {
                 case "Gauss Jordan":
                     int tamaño = int.Parse(txtDimension.Text);
-                    string[,] arreglo=new string[tamaño,tamaño];
-                    int contadorI = 0;
-                    int contadorJ = 0;
-                    foreach (TextBox txt in panel1.Controls.OfType<TextBox>())
-                    {//ver que hacer porque el foreach recorre todo. habria que indicar que cuando contador j es j+1 no se cuente
-                        if (contadorI == contadorJ & contadorI == 0)
+                    double[,] arreglo=new double[tamaño,tamaño+1];
+                    for (int i = 0; i < tamaño; i++)
+                    {
+                        for (int j = 0; j < tamaño+1; j++)
                         {
-                            contadorI = +1;
-                            contadorJ = +1;
+                            Control txtObtenido = panel1.Controls.Find("txt" +i.ToString()+j.ToString(),true).First();
+                            arreglo[i, j] = double.Parse((txtObtenido as TextBox).Text);
                         }
-                        else
-                        {
-                            if (contadorJ==tamaño)
-                            {
-                                contadorI = +1;
-                                contadorJ = 0;
-                            }
-                            else
-                            {
-                                contadorJ = +1;
-                            }
-                        }
-                        arreglo[contadorI, contadorJ] = txt.ToString();
                     }
                     principal.CaclularGaussJordan(arreglo);
                     break;
@@ -89,6 +74,7 @@ namespace WindowsFormsApp1
                     {
                         txtCreado = new TextBox();
                         txtCreado.Text = (j + 1).ToString();
+                        txtCreado.Name = $"txt{i}{j}";
                         txtCreado.Location = new Point(puntoX, puntoY);
                         panel1.Controls.Add(txtCreado);
                         panel1.Show();
