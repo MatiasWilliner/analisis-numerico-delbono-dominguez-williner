@@ -36,11 +36,13 @@ namespace WindowsFormsApp1
                     {
                         for (int j = 0; j < tamaño+1; j++)
                         {
-                            Control txtObtenido = panel1.Controls.Find("txt" +i.ToString()+j.ToString(),true).First();
-                            arreglo[i, j] = double.Parse((txtObtenido as TextBox).Text);
+                            Control txtObtenido = panel1.Controls.Find("txt"+i.ToString()+j.ToString(),true).First();
+                            arreglo[i,j] = double.Parse((txtObtenido as TextBox).Text);
                         }
                     }
-                    principal.CaclularGaussJordan(arreglo);
+                    RespuestaUnidad2 respuesta =principal.CaclularGaussJordan(arreglo,tamaño);
+                    MessageBox.Show($"{respuesta.valores}");
+                    
                     break;
                 case "Gauss Seidel":
                     break;
@@ -65,20 +67,22 @@ namespace WindowsFormsApp1
                 for (int i = 0; i < fila; i++)
                 {
                     puntoX = 30;
-                    TextBox txtCreado = new TextBox();
-                    //txtCreado.Text = (i + 1).ToString();
+                    /*TextBox txtCreado = new TextBox();
                     txtCreado.Location = new Point(puntoX, puntoY);
                     panel1.Controls.Add(txtCreado);
                     panel1.Show();
+                    txtCreado.Text = (0).ToString();*/
                     for (int j = 0; j < columna; j++)
                     {
-                        txtCreado = new TextBox();
-                        txtCreado.Text = (j + 1).ToString();
-                        txtCreado.Name = $"txt{i}{j}";
+                        TextBox txtCreado = new TextBox();
                         txtCreado.Location = new Point(puntoX, puntoY);
                         panel1.Controls.Add(txtCreado);
                         panel1.Show();
                         puntoX += 100;
+                        txtCreado.Text = (0).ToString();
+                        //txtCreado.Text = "".ToString();
+                        txtCreado.Name = $"txt{i}{j}";
+                        
                     }
                     puntoY += 20;
                 }

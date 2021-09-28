@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using org.mariuszgromada.math.mxparser;
 using System.Globalization;
-
+using System.Windows.Forms;
 
 namespace Logica
 {
@@ -404,9 +404,44 @@ namespace Logica
         }
 
         /////////////////////////////////// Cálculo Gauss Jordan ////////////////////////////////////////
-        public void CaclularGaussJordan(double [,] arreglo)
+        public RespuestaUnidad2 CaclularGaussJordan(double [,] arreglo, int tamaño)
         {
-            
+            for (int i = 0; i < tamaño; i++)
+            {
+                double coef= arreglo[i, i];
+                for (int j = 0; j < tamaño+1; j++)
+                {
+                    arreglo[i, j] = arreglo[i, j] / coef;
+                }
+                for (int x = 0; x < tamaño; x++)
+                {
+                    if (i!=x)
+                    {
+                        coef = arreglo[x, i];
+                        for (int k = 0; k < tamaño+1; k++)
+                        {
+                            arreglo[x, k] = arreglo[x, k] - (coef * arreglo[i, k]);
+                        }
+                    }
+                }
+            }
+            List<double> listaResultado = ObtenerResultados(arreglo, tamaño);
+            RespuestaUnidad2 respuesta = new RespuestaUnidad2();
+            respuesta.Posible = true;
+            respuesta.Iteraciones = 0.ToString();
+            respuesta.valores = listaResultado;
+            return respuesta;
+            //MessageBox.Show($"Resultados {arreglo[]}");
         }
+        private List<double> ObtenerResultados(double[,] arreglo, int tamaño)
+        {
+            List<double> lista = new List<double>();
+            for (int i = 0; i < tamaño; i++)
+            {
+                lista.Add(arreglo[i, tamaño]);
+            }
+            return lista;
+        }
+        
     }
 }
