@@ -453,18 +453,17 @@ namespace Logica
             double[] resultados = new double[tamaño];
             double [] vectorAnterior=new double[tamaño];
             double [] vectorResultado=new double[tamaño];
-            double resultado = 0;
             int contador = 0;
             while(iteraciones>=contador)
             {
-                contador = +1;
+                contador = contador+1;
                 if (contador>1)
                 {
                     vectorResultado.CopyTo(vectorAnterior, 0);
                 }
                 for (int i = 0; i < tamaño; i++)
                 {
-                    resultado = arreglo[i,tamaño];
+                    double resultado = arreglo[i,tamaño];
                     double x = Convert.ToDouble(arreglo[i, i]);
                     for (int j = 0; j < tamaño; j++)
                     {
@@ -484,7 +483,7 @@ namespace Logica
                         respuesta.Comentario = "El valor es menor a la tolerancia";
                         respuesta.Posible = true;
                         respuesta.Iteraciones = contador;
-                        respuesta.Valores = SacarValores(resultados,tamaño);
+                        respuesta.Valores = SacarValores(vectorResultado,tamaño);
                         return respuesta;
                     }
                 }
@@ -492,6 +491,7 @@ namespace Logica
             respuesta.Comentario = "Se superó el número de iteraciones";
             respuesta.Posible = false;
             respuesta.Iteraciones = contador;
+            respuesta.Valores = SacarValores(resultados,tamaño);
             return respuesta;
         }
 

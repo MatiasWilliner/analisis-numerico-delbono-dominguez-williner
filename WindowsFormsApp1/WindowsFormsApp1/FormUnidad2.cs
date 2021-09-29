@@ -20,6 +20,9 @@ namespace WindowsFormsApp1
             comboBox1.Items.Add("Gauss Jordan");
             comboBox1.Items.Add("Gauss Seidel");
             btnCalcular.Enabled = false;
+            comboBox1.Enabled = false;
+            txtIteraciones.Enabled = false;
+            txtTolerancia.Enabled = false;
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -27,6 +30,11 @@ namespace WindowsFormsApp1
             comboBox1.Text = "";
             btnCalcular.Enabled = false;
             btnGenerar.Enabled = true;
+            txtIteraciones.Enabled = false;
+            txtTolerancia.Enabled = false;
+            comboBox1.Enabled = false;
+            string variable = "";
+            int contador = 0;
             switch (comboBox1.SelectedItem.ToString())
             {
                 case "Gauss Jordan":
@@ -41,8 +49,14 @@ namespace WindowsFormsApp1
                         }
                     }
                     RespuestaUnidad2 respuesta =principal.CaclularGaussJordan(arreglo,tamaño);
-                    MessageBox.Show($"{respuesta.Valores}");
+                    foreach (var valor in respuesta.Valores)
+                    {
+                        contador = contador + 1;
+                        variable = variable + $" x{contador}: "+valor+" |";
+                    }
+                    MessageBox.Show(variable,"Resultados Gauss Seidel", MessageBoxButtons.OK,MessageBoxIcon.Information);
                     break;
+
                 case "Gauss Seidel":
                     int iteraciones = int.Parse(txtIteraciones.Text);
                     double tolerancia = double.Parse(txtTolerancia.Text);
@@ -57,7 +71,14 @@ namespace WindowsFormsApp1
                         }
                     }
                     respuesta = principal.CalcularGaussSeidel(arreglo,tamaño,iteraciones,tolerancia);
+                    foreach (var valor in respuesta.Valores)
+                    {
+                        contador = contador + 1;
+                        variable = variable + $" X{contador}: " + valor+" |";
+                    }
+                    MessageBox.Show(variable+$" Iteraciones:{respuesta.Iteraciones}","Resultados Gauss Seidel",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     break;
+
                 default:
                     break;
                 
@@ -68,7 +89,7 @@ namespace WindowsFormsApp1
         {
             btnCalcular.Enabled = true;
             btnGenerar.Enabled = false;
-
+            comboBox1.Enabled = true;
             try
             {
                 int fila = int.Parse(txtDimension.Text);
@@ -111,5 +132,18 @@ namespace WindowsFormsApp1
             menu.Show();
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem.ToString()=="Gauss Seidel")
+            {
+                txtIteraciones.Enabled = true;
+                txtTolerancia.Enabled = true;
+            }
+            else
+            {
+                txtIteraciones.Enabled = false;
+                txtTolerancia.Enabled = false;
+            }
+        }
     }
 }
