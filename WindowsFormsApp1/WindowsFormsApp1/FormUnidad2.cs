@@ -54,7 +54,7 @@ namespace WindowsFormsApp1
                         contador = contador + 1;
                         variable = variable + $" x{contador}: "+valor+" |";
                     }
-                    MessageBox.Show(variable,"Resultados Gauss Seidel", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    MessageBox.Show(variable,"Resultados Gauss Jordan", MessageBoxButtons.OK,MessageBoxIcon.Information);
                     break;
 
                 case "Gauss Seidel":
