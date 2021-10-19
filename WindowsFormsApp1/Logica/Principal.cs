@@ -505,5 +505,22 @@ namespace Logica
             }
             return listaResultados;
         }
+
+        //////////////////////////////// Cálculo regresión lineal //////////////////////////////////////
+        
+        public void CalcularRegresionLineal(double[,] datos, int conteo, int grado)
+        {
+            double sumX = 0;
+            double sumY = 0;
+            double sumXY = 0;
+            double sumXC = 0;
+            for (int i = 0; i < conteo; i++)
+            {
+                sumX = sumX + datos[0, i];
+                sumY = sumY + datos[1, i];
+                sumXY = sumXY + (datos[0,i]*datos[1,i]);
+                sumXC = sumXC + Math.Pow(datos[0,i],2);
+            }
+        }
     }
 }

@@ -36,5 +36,12 @@ namespace WindowsFormsApp1
             unidad2.Show();
             this.Visible = false;
         }
+
+        private void btnUnidad3_Click(object sender, EventArgs e)
+        {
+            FormUnidad3 unidad3 = new FormUnidad3();
+            unidad3.Show();
+            this.Visible = false;
+        }
     }
 }
