@@ -50,6 +50,7 @@
     <Compile Include="Respuesta.cs" />
     <Compile Include="RespuestaUnidad2.cs" />
     <Compile Include="ResultadoComprobacion.cs" />
+    <Compile Include="ResultadoUnidad3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

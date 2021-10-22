@@ -35,10 +35,10 @@ namespace WindowsFormsApp1
             this.btnCalcular = new System.Windows.Forms.Button();
             this.btnRegresar = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txtRango = new System.Windows.Forms.TextBox();
+            this.txtCondicion = new System.Windows.Forms.TextBox();
+            this.txtPorcentaje = new System.Windows.Forms.TextBox();
+            this.txtFuncion = new System.Windows.Forms.TextBox();
             this.lblCaso = new System.Windows.Forms.Label();
             this.lblRango = new System.Windows.Forms.Label();
             this.lblCondicion = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@ namespace WindowsFormsApp1
             this.Y});
             this.dataGridView1.Location = new System.Drawing.Point(63, 86);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(246, 272);
+            this.dataGridView1.Size = new System.Drawing.Size(246, 374);
             this.dataGridView1.TabIndex = 0;
             // 
             // X
@@ -86,6 +86,7 @@ namespace WindowsFormsApp1
             this.btnRegresar.TabIndex = 2;
             this.btnRegresar.Text = "Regresar";
             this.btnRegresar.UseVisualStyleBackColor = true;
+            this.btnRegresar.Click += new System.EventHandler(this.btnRegresar_Click);
             // 
             // comboBox1
             // 
@@ -94,34 +95,35 @@ namespace WindowsFormsApp1
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 3;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // textBox1
+            // txtRango
             // 
-            this.textBox1.Location = new System.Drawing.Point(138, 49);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 4;
+            this.txtRango.Location = new System.Drawing.Point(138, 49);
+            this.txtRango.Name = "txtRango";
+            this.txtRango.Size = new System.Drawing.Size(121, 20);
+            this.txtRango.TabIndex = 4;
             // 
-            // textBox2
+            // txtCondicion
             // 
-            this.textBox2.Location = new System.Drawing.Point(618, 66);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 5;
+            this.txtCondicion.Location = new System.Drawing.Point(545, 66);
+            this.txtCondicion.Name = "txtCondicion";
+            this.txtCondicion.Size = new System.Drawing.Size(173, 20);
+            this.txtCondicion.TabIndex = 5;
             // 
-            // textBox3
+            // txtPorcentaje
             // 
-            this.textBox3.Location = new System.Drawing.Point(618, 104);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 6;
+            this.txtPorcentaje.Location = new System.Drawing.Point(545, 104);
+            this.txtPorcentaje.Name = "txtPorcentaje";
+            this.txtPorcentaje.Size = new System.Drawing.Size(173, 20);
+            this.txtPorcentaje.TabIndex = 6;
             // 
-            // textBox4
+            // txtFuncion
             // 
-            this.textBox4.Location = new System.Drawing.Point(618, 142);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 7;
+            this.txtFuncion.Location = new System.Drawing.Point(545, 142);
+            this.txtFuncion.Name = "txtFuncion";
+            this.txtFuncion.Size = new System.Drawing.Size(173, 20);
+            this.txtFuncion.TabIndex = 7;
             // 
             // lblCaso
             // 
@@ -144,7 +146,7 @@ namespace WindowsFormsApp1
             // lblCondicion
             // 
             this.lblCondicion.AutoSize = true;
-            this.lblCondicion.Location = new System.Drawing.Point(508, 73);
+            this.lblCondicion.Location = new System.Drawing.Point(427, 73);
             this.lblCondicion.Name = "lblCondicion";
             this.lblCondicion.Size = new System.Drawing.Size(54, 13);
             this.lblCondicion.TabIndex = 10;
@@ -153,7 +155,7 @@ namespace WindowsFormsApp1
             // lblAjuste
             // 
             this.lblAjuste.AutoSize = true;
-            this.lblAjuste.Location = new System.Drawing.Point(508, 107);
+            this.lblAjuste.Location = new System.Drawing.Point(427, 107);
             this.lblAjuste.Name = "lblAjuste";
             this.lblAjuste.Size = new System.Drawing.Size(104, 13);
             this.lblAjuste.TabIndex = 11;
@@ -162,7 +164,7 @@ namespace WindowsFormsApp1
             // lblFuncion
             // 
             this.lblFuncion.AutoSize = true;
-            this.lblFuncion.Location = new System.Drawing.Point(508, 142);
+            this.lblFuncion.Location = new System.Drawing.Point(427, 142);
             this.lblFuncion.Name = "lblFuncion";
             this.lblFuncion.Size = new System.Drawing.Size(45, 13);
             this.lblFuncion.TabIndex = 12;
@@ -172,16 +174,16 @@ namespace WindowsFormsApp1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(768, 370);
+            this.ClientSize = new System.Drawing.Size(768, 472);
             this.Controls.Add(this.lblFuncion);
             this.Controls.Add(this.lblAjuste);
             this.Controls.Add(this.lblCondicion);
             this.Controls.Add(this.lblRango);
             this.Controls.Add(this.lblCaso);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtFuncion);
+            this.Controls.Add(this.txtPorcentaje);
+            this.Controls.Add(this.txtCondicion);
+            this.Controls.Add(this.txtRango);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.btnRegresar);
             this.Controls.Add(this.btnCalcular);
@@ -202,10 +204,10 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Button btnCalcular;
         private System.Windows.Forms.Button btnRegresar;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txtRango;
+        private System.Windows.Forms.TextBox txtCondicion;
+        private System.Windows.Forms.TextBox txtPorcentaje;
+        private System.Windows.Forms.TextBox txtFuncion;
         private System.Windows.Forms.Label lblCaso;
         private System.Windows.Forms.Label lblRango;
         private System.Windows.Forms.Label lblCondicion;

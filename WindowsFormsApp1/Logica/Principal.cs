@@ -508,19 +508,58 @@ namespace Logica
 
         //////////////////////////////// Cálculo regresión lineal //////////////////////////////////////
         
-        public void CalcularRegresionLineal(double[,] datos, int conteo, int grado)
+        public ResultadoUnidad3 CalcularRegresionLineal(double[,] datos, int conteo)
         {
+            ResultadoUnidad3 resultado = new ResultadoUnidad3();
             double sumX = 0;
             double sumY = 0;
             double sumXY = 0;
             double sumXC = 0;
             for (int i = 0; i < conteo; i++)
             {
-                sumX = sumX + datos[0, i];
-                sumY = sumY + datos[1, i];
-                sumXY = sumXY + (datos[0,i]*datos[1,i]);
-                sumXC = sumXC + Math.Pow(datos[0,i],2);
+                sumX = sumX + datos[i, 0];
+                sumY = sumY + datos[i, 1];
+                sumXY = sumXY + (datos[i,0]*datos[i,1]);
+                sumXC = sumXC + Math.Pow(datos[i,0],2);
             }
+            double pendiente= ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX,2)));
+            double ordenada = (sumY - (pendiente * sumX)) / conteo;
+            string función = ($"y = {pendiente.ToString("###0.0000")}x + ( {ordenada.ToString("###0.0000")} )");
+
+            double Sr = 0;
+            double St = 0;
+
+            for (int i = 0; i < conteo - 1; i++)
+            {
+                Sr = +Math.Pow((pendiente * datos[i, 0]) + ordenada - datos[i, 1], 2);
+                St = +Math.Pow((sumY / conteo) - datos[i, 1], 2);
+            }
+
+            //// da raíz negativa y por lo tanto muestra NAN
+            //double r = Math.Sqrt((St - Sr) / St) * 100;
+            
+            double r= Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
+            
+            string condicion ="";
+            string ajuste ="";
+
+            if (r < 80)
+            {
+                ajuste =r.ToString("###0.0000");
+                condicion = "El ajuste no es aceptable";
+            }
+            else
+            {
+                ajuste = r.ToString("###0.0000");
+                condicion = "El ajuste es aceptable";
+            }
+            
+            resultado.Función = función;
+            resultado.Condicion = condicion;
+            resultado.PorcentajeAjuste =ajuste;
+
+            return resultado;
+
         }
     }
 }
