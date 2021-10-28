@@ -529,7 +529,7 @@ namespace Logica
             double Sr = 0;
             double St = 0;
 
-            for (int i = 0; i < conteo - 1; i++)
+            for (int i = 0; i < conteo; i++)
             {
                 Sr = +Math.Pow((pendiente * datos[i, 0]) + ordenada - datos[i, 1], 2);
                 St = +Math.Pow((sumY / conteo) - datos[i, 1], 2);
@@ -561,5 +561,20 @@ namespace Logica
             return resultado;
 
         }
+        
+        /////////////////////////////// Cálculo regresión polinomial //////////////////////////////////
+        public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int conteo, int rango)
+        {
+            ResultadoUnidad3 resultado = new ResultadoUnidad3();
+            return resultado;
+        }
+
+        //////////////////////////////// Cálculo método del trapecio /////////////////////////////////
+
+        /////////////////////////////// Cálculo método del trapecio múltiples ///////////////////////
+
+        ////////////////////////////// Cálculo método Simpson 1/3 ////////////////////////////////////
+
+        ////////////////////////////// Cálculo método Simpson 1/3 múltiples //////////////////////////
     }
 }

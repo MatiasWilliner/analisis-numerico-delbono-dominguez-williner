@@ -75,6 +75,7 @@ namespace WindowsFormsApp1
             this.btnUnidad4.TabIndex = 3;
             this.btnUnidad4.Text = "Unidad 4";
             this.btnUnidad4.UseVisualStyleBackColor = true;
+            this.btnUnidad4.Click += new System.EventHandler(this.btnUnidad4_Click);
             // 
             // label1
             // 

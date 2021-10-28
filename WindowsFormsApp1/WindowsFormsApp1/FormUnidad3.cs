@@ -47,6 +47,11 @@ namespace WindowsFormsApp1
                     txtPorcentaje.Text = resultado.PorcentajeAjuste;
                     break;
                 case "Regresión polinomial":
+                    int rango = int.Parse(txtRango.Text);
+                    resultado = principal.CalcularRegresionPolinomial(puntos, conteo, rango);
+                    txtCondicion.Text = resultado.Condicion;
+                    txtFuncion.Text = resultado.Función;
+                    txtPorcentaje.Text = resultado.PorcentajeAjuste;
                     break;
                 default:
                     break;
