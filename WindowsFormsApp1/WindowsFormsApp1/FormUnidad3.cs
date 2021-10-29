@@ -43,14 +43,14 @@ namespace WindowsFormsApp1
                 case "Regresión Líneal":
                     ResultadoUnidad3 resultado=principal.CalcularRegresionLineal(puntos,conteo);
                     txtCondicion.Text = resultado.Condicion;
-                    txtFuncion.Text = resultado.Función;
+                    txtFuncion.Text = resultado.Funcion;
                     txtPorcentaje.Text = resultado.PorcentajeAjuste;
                     break;
                 case "Regresión polinomial":
                     int rango = int.Parse(txtRango.Text);
-                    resultado = principal.CalcularRegresionPolinomial(puntos, conteo, rango);
+                    resultado = principal.CalcularRegresionPolinomial(puntos, rango, conteo);
                     txtCondicion.Text = resultado.Condicion;
-                    txtFuncion.Text = resultado.Función;
+                    txtFuncion.Text = resultado.Funcion;
                     txtPorcentaje.Text = resultado.PorcentajeAjuste;
                     break;
                 default:

@@ -12,6 +12,6 @@ namespace Logica
 
         public string PorcentajeAjuste { get; set; }
 
-        public string Función { get; set; }
+        public string Funcion { get; set; }
     }
 }

@@ -524,15 +524,16 @@ namespace Logica
             }
             double pendiente= ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX,2)));
             double ordenada = (sumY - (pendiente * sumX)) / conteo;
-            string función = ($"y = {pendiente.ToString("###0.0000")}x + ( {ordenada.ToString("###0.0000")} )");
+            string funcion = ($"y = {pendiente.ToString("###0.0000")}x + ( {ordenada.ToString("###0.0000")} )");
 
             double Sr = 0;
             double St = 0;
+            double mediaY = sumY / conteo;
 
             for (int i = 0; i < conteo; i++)
             {
-                Sr = +Math.Pow((pendiente * datos[i, 0]) + ordenada - datos[i, 1], 2);
-                St = +Math.Pow((sumY / conteo) - datos[i, 1], 2);
+                Sr += Math.Pow((pendiente * datos[i, 0]) + ordenada - datos[i, 1], 2);
+                St +=Math.Pow(mediaY - datos[i, 1], 2);
             }
 
             //// da raíz negativa y por lo tanto muestra NAN
@@ -554,7 +555,7 @@ namespace Logica
                 condicion = "El ajuste es aceptable";
             }
             
-            resultado.Función = función;
+            resultado.Funcion = funcion;
             resultado.Condicion = condicion;
             resultado.PorcentajeAjuste =ajuste;
 
@@ -563,11 +564,55 @@ namespace Logica
         }
         
         /////////////////////////////// Cálculo regresión polinomial //////////////////////////////////
-        public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int conteo, int rango)
+        /*public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int grado, int cantidad)
         {
+            double[] Vx = new double[cantidad];
+            double[] Vy = new double[cantidad];
+            double sumX = 0;
+            double sumY = 0;
+            double[,] M = new double[grado+1,grado+2];
+            for (int i = 0; i < cantidad; i++)
+            {
+                Vx[i] = datos[i,0];
+                sumX += Vx[i];
+                Vy[i] = datos[i, 1];
+                sumY += Vy[i];
+                for (int j = 0; j < grado+1; j++)
+                {
+                    for (int k = 0; k < grado+1; k++)
+                    {
+                        M[j, k] += Math.Pow(Vx[i], j + k);
+                    }
+                    M[j, grado+1] += Vy[i] * Math.Pow(Vx[i],j);
+                }
+            }
+            RespuestaUnidad2 resultadoGaussJordan = CaclularGaussJordan(M, grado+1);
+            string funcion = "y =";
+            int contador = 0;
+            foreach (var item in resultadoGaussJordan.Valores)
+            {
+                if (contador==0)
+                {
+                    funcion = funcion + $" {item}";
+                }
+                else
+                {
+                    if (contador==1)
+                    {
+                        funcion = funcion + $" {item}x";
+                    }
+                    else
+                    {
+                        funcion = funcion + $" {item}x^{contador}";
+                    }
+                }
+                contador+=1; 
+            }
+            
             ResultadoUnidad3 resultado = new ResultadoUnidad3();
+            resultado.Funcion = funcion;
             return resultado;
-        }
+        }*/
 
         //////////////////////////////// Cálculo método del trapecio /////////////////////////////////
 
