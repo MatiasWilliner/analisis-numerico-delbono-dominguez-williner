@@ -524,7 +524,7 @@ namespace Logica
             }
             double pendiente= ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX,2)));
             double ordenada = (sumY - (pendiente * sumX)) / conteo;
-            string funcion = ($"y = {pendiente.ToString("###0.0000")}x + ( {ordenada.ToString("###0.0000")} )");
+            string funcion = ($"y = {pendiente.ToString("###0.000")}x + ( {ordenada.ToString("###0.000")} )");
 
             double Sr = 0;
             double St = 0;
@@ -546,12 +546,12 @@ namespace Logica
 
             if (r < 80)
             {
-                ajuste =r.ToString("###0.0000");
+                ajuste =r.ToString("###0.00");
                 condicion = "El ajuste no es aceptable";
             }
             else
             {
-                ajuste = r.ToString("###0.0000");
+                ajuste = r.ToString("###0.00");
                 condicion = "El ajuste es aceptable";
             }
             
@@ -595,19 +595,19 @@ namespace Logica
             {
                 if (contador==0)
                 {
-                    funcion = funcion + $" {item}";
+                    funcion = funcion + $" {item.ToString("###0.000")}";
                     a0 = item;
                 }
                 else
                 {
                     if (contador==1)
                     {
-                        funcion = funcion + $" {item}x";
+                        funcion = funcion + $" {item.ToString("###0.000")}x";
                         a1 = item;
                     }
                     else
                     {
-                        funcion = funcion + $" {item}x^{contador}";
+                        funcion = funcion + $" {item.ToString("###0.000")}x^{contador}";
                     }
                 }
                 contador+=1; 
@@ -641,19 +641,19 @@ namespace Logica
         }
 
         //////////////////////////////// Cálculo método del trapecio /////////////////////////////////
-        public double CalcularMetodoTrapecio(double xi, double xf, Function f)
+        public string CalcularMetodoTrapecio(double xi, double xf, Function f)
         {
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxf = new Expression("f(" + xf.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             double funcionxi = expresionxi.calculate();
             double funcionxf = expresionxf.calculate();
-            double area = ((funcionxi + funcionxf) * (xf - xi)) / 2;
+            string area = (((funcionxi + funcionxf) * (xf - xi)) / 2).ToString("###0.000");
             return area;
         }
 
         /////////////////////////////// Cálculo método del trapecio múltiples ///////////////////////
         
-        public double CalcularMetodoTrapeciosMultiples(double xi, double xf, Function f, double n)
+        public string CalcularMetodoTrapeciosMultiples(double xi, double xf, Function f, double n)
         {
             double h = (xf - xi) / n;
             double xh = xi+h;
@@ -669,13 +669,13 @@ namespace Logica
                 a = a + funcionxh;
                 xh = xh + h;
             }
-            double area = (h / 2) * (funcionxi+2*a+funcionxf);
+            string area = ((h / 2) * (funcionxi+2*a+funcionxf)).ToString("###0.000");
             return area;
         }
 
         ////////////////////////////// Cálculo método Simpson 1/3 ////////////////////////////////////
         
-        public double CalcularSimpson(double x0, double x2, Function f)
+        public string CalcularSimpson(double x0, double x2, Function f)
         {
             double x1 = (x0 + x2) / 2;
             Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
@@ -685,13 +685,13 @@ namespace Logica
             double funcionx2 = expresionx2.calculate();
             double funcionx1 = expresionx1.calculate();
             double h = (x2 - x0) / 2;
-            double area = (h/3) * (funcionx0 + 4 * funcionx1 + funcionx2);
+            string area = ((h/3) * (funcionx0 + 4 * funcionx1 + funcionx2)).ToString("###0.000");
             return area;
         }
 
         ////////////////////////////// Cálculo método Simpson 1/3 múltiples //////////////////////////
         
-        public double CalcularSimpsonMultiple(double x0, double x2, Function f, double n)
+        public string CalcularSimpsonMultiple(double x0, double x2, Function f, double n)
         {
             
             Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
@@ -721,7 +721,7 @@ namespace Logica
                 }
                 
             }
-            double area = (h / 3) * (funcionx0 + 4 * sumI +2*sumP+ funcionx2);
+            string area = ((h / 3) * (funcionx0 + 4 * sumI +2*sumP+ funcionx2)).ToString("###0.000");
             return area;
         }
     }
