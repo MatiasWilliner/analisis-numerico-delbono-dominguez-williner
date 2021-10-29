@@ -22,6 +22,7 @@ namespace WindowsFormsApp1
             comboBox1.Items.Add("Trapecio múltiples");
             comboBox1.Items.Add("Simpson 1/3");
             comboBox1.Items.Add("Simpson 1/3 múltiples");
+            txtCantidad.Enabled = false;
         }
 
         private void btnRegresar_Click(object sender, EventArgs e)
@@ -39,18 +40,37 @@ namespace WindowsFormsApp1
             switch (comboBox1.Text)
             {
                 case "Trapecio":
+                    double area=principal.CalcularMetodoTrapecio(xi,xf,f);
+                    txtArea.Text=area.ToString();
                     break;
                 case "Trapecio múltiples":
                     int cantidad=int.Parse(txtCantidad.Text);
+                    area = principal.CalcularMetodoTrapeciosMultiples(xi,xf,f,cantidad);
+                    txtArea.Text = area.ToString();
                     break;
                 case "Simpson 1/3":
+                    area = principal.CalcularSimpson(xi, xf, f);
+                    txtArea.Text = area.ToString();
                     break;
                 case "Simpson 1/3 múltiples":
                     cantidad = int.Parse(txtCantidad.Text);
-
+                    area = principal.CalcularSimpsonMultiple(xi, xf, f, cantidad);
+                    txtArea.Text = area.ToString();
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text== "Trapecio" || comboBox1.Text== "Simpson 1/3")
+            {
+                txtCantidad.Enabled = false;
+            }
+            else
+            {
+                txtCantidad.Enabled = true;
             }
         }
     }

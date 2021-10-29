@@ -564,7 +564,7 @@ namespace Logica
         }
         
         /////////////////////////////// Cálculo regresión polinomial //////////////////////////////////
-        /*public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int grado, int cantidad)
+        public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int grado, int cantidad)
         {
             double[] Vx = new double[cantidad];
             double[] Vy = new double[cantidad];
@@ -589,17 +589,21 @@ namespace Logica
             RespuestaUnidad2 resultadoGaussJordan = CaclularGaussJordan(M, grado+1);
             string funcion = "y =";
             int contador = 0;
+            double a1 = 0;
+            double a0 = 0;
             foreach (var item in resultadoGaussJordan.Valores)
             {
                 if (contador==0)
                 {
                     funcion = funcion + $" {item}";
+                    a0 = item;
                 }
                 else
                 {
                     if (contador==1)
                     {
                         funcion = funcion + $" {item}x";
+                        a1 = item;
                     }
                     else
                     {
@@ -608,18 +612,117 @@ namespace Logica
                 }
                 contador+=1; 
             }
-            
             ResultadoUnidad3 resultado = new ResultadoUnidad3();
             resultado.Funcion = funcion;
+            /*string ajuste = "";
+            string condicion = "";
+            double Sr = 0;
+            double St = 0;
+            
+            for (int i = 0; i < cantidad; i++)
+            {
+               Sr += Math.Pow((a1 * datos[i, 0]) + a0 - datos[i, 1], 2);
+               St += Math.Pow((sumY / cantidad) - datos[i, 1], 2);
+            }
+
+            double r = Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
+            if (r < 80)
+            {
+                ajuste = r.ToString("###0.0000");
+                condicion = "El ajuste no es aceptable";
+            }
+            else
+            {
+                ajuste = r.ToString("###0.0000");
+                condicion = "El ajuste es aceptable";
+            }
+            */
             return resultado;
-        }*/
+        }
 
         //////////////////////////////// Cálculo método del trapecio /////////////////////////////////
+        public double CalcularMetodoTrapecio(double xi, double xf, Function f)
+        {
+            Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionxf = new Expression("f(" + xf.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionxi = expresionxi.calculate();
+            double funcionxf = expresionxf.calculate();
+            double area = ((funcionxi + funcionxf) * (xf - xi)) / 2;
+            return area;
+        }
 
         /////////////////////////////// Cálculo método del trapecio múltiples ///////////////////////
+        
+        public double CalcularMetodoTrapeciosMultiples(double xi, double xf, Function f, double n)
+        {
+            double h = (xf - xi) / n;
+            double xh = xi+h;
+            Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionxf = new Expression("f(" + xf.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionxi = expresionxi.calculate();
+            double funcionxf = expresionxf.calculate();
+            double a = 0;
+            for (int i = 0; i < n-1; i++)
+            {
+                Expression expresionxh = new Expression("f(" + xh.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                double funcionxh = expresionxh.calculate();
+                a = a + funcionxh;
+                xh = xh + h;
+            }
+            double area = (h / 2) * (funcionxi+2*a+funcionxf);
+            return area;
+        }
 
         ////////////////////////////// Cálculo método Simpson 1/3 ////////////////////////////////////
+        
+        public double CalcularSimpson(double x0, double x2, Function f)
+        {
+            double x1 = (x0 + x2) / 2;
+            Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx1 = new Expression("f(" + x1.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionx0 = expresionx0.calculate();
+            double funcionx2 = expresionx2.calculate();
+            double funcionx1 = expresionx1.calculate();
+            double h = (x2 - x0) / 2;
+            double area = (h/3) * (funcionx0 + 4 * funcionx1 + funcionx2);
+            return area;
+        }
 
         ////////////////////////////// Cálculo método Simpson 1/3 múltiples //////////////////////////
+        
+        public double CalcularSimpsonMultiple(double x0, double x2, Function f, double n)
+        {
+            
+            Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionx0 = expresionx0.calculate();
+            double funcionx2 = expresionx2.calculate();
+            double h = (x2 - x0) / n;
+            double xi= x0 + h;
+            double xp= xi + h;
+            double sumI = 0;
+            double sumP = 0;
+            for (int i = 1; i < n; i++)
+            {
+                if (Math.Pow(-1,i)>0)
+                {
+                    Expression expresionxp = new Expression("f(" + xp.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    double funcionxp = expresionxp.calculate();
+                    sumP = sumP + funcionxp;
+                    xp = xp + 2 * h;
+                }
+                else
+                {
+                    Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+                    double funcionxi = expresionxi.calculate();
+                    sumI = sumI + funcionxi;
+                    xi = xi + 2 * h;
+                }
+                
+            }
+            double area = (h / 3) * (funcionx0 + 4 * sumI +2*sumP+ funcionx2);
+            return area;
+        }
     }
 }
