@@ -524,7 +524,8 @@ namespace Logica
             }
             double pendiente= ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX,2)));
             double ordenada = (sumY - (pendiente * sumX)) / conteo;
-            string funcion = ($"y = {pendiente.ToString("###0.000")}x + ( {ordenada.ToString("###0.000")} )");
+            string signo = ObtenerSigno(ordenada);
+            string funcion = ($"y = {pendiente.ToString("###0.000")}x {signo}{ordenada.ToString("###0.000")} ");
 
             double Sr = 0;
             double St = 0;
@@ -589,40 +590,43 @@ namespace Logica
             RespuestaUnidad2 resultadoGaussJordan = CaclularGaussJordan(M, grado+1);
             string funcion = "y =";
             int contador = 0;
-            double a1 = 0;
-            double a0 = 0;
             foreach (var item in resultadoGaussJordan.Valores)
             {
+                string signo = ObtenerSigno(item);
                 if (contador==0)
                 {
-                    funcion = funcion + $" {item.ToString("###0.000")}";
-                    a0 = item;
+                    funcion = funcion + $" {signo}{item.ToString("###0.000")}";
                 }
                 else
                 {
                     if (contador==1)
                     {
-                        funcion = funcion + $" {item.ToString("###0.000")}x";
-                        a1 = item;
+                        funcion = funcion + $" {signo}{item.ToString("###0.000")}x";
                     }
                     else
                     {
-                        funcion = funcion + $" {item.ToString("###0.000")}x^{contador}";
+                        funcion = funcion + $" {signo}{item.ToString("###0.000")}x^{contador}";
                     }
                 }
                 contador+=1; 
             }
             ResultadoUnidad3 resultado = new ResultadoUnidad3();
             resultado.Funcion = funcion;
-            /*string ajuste = "";
+            string ajuste = "";
             string condicion = "";
+            double suma;
             double Sr = 0;
             double St = 0;
-            
             for (int i = 0; i < cantidad; i++)
             {
-               Sr += Math.Pow((a1 * datos[i, 0]) + a0 - datos[i, 1], 2);
-               St += Math.Pow((sumY / cantidad) - datos[i, 1], 2);
+               
+               St += Math.Pow((sumY / cantidad) - Vy[i], 2);
+               suma = 0;
+               for (int j = 0; j < grado+1; j++)
+               {
+                    suma += (resultadoGaussJordan.Valores.ElementAt(j) * Math.Pow(Vx[i], j));
+               }
+               Sr += Math.Pow(suma -Vy[i],2);
             }
 
             double r = Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
@@ -636,7 +640,8 @@ namespace Logica
                 ajuste = r.ToString("###0.0000");
                 condicion = "El ajuste es aceptable";
             }
-            */
+            resultado.Condicion = condicion;
+            resultado.PorcentajeAjuste = ajuste;
             return resultado;
         }
 
@@ -723,6 +728,64 @@ namespace Logica
             }
             string area = ((h / 3) * (funcionx0 + 4 * sumI +2*sumP+ funcionx2)).ToString("###0.000");
             return area;
+        }
+
+        ///////////////////////////// Cálculo método Simpson 3/8 ///////////////////////////////////
+        
+        public string CalcularSimpsonTresOctavos(double x0,double x3, Function f, double n)
+        {
+            /*double h = (x3 - x0) / n;
+            double x2 = x3 - h;
+            double x1 = x2 - h;
+            x0 = x1 - h;
+            double h1 = (x3 - x0) / 3;
+            Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx1 = new Expression("f(" + x1.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx3 = new Expression("f(" + x3.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionx0 = expresionx0.calculate();
+            double funcionx1 = expresionx1.calculate();
+            double funcionx2 = expresionx2.calculate();
+            double funcionx3 = expresionx3.calculate();
+            double ocho = 8;
+            double tres = 3;
+            double division = tres / ocho;*/
+
+            double h = (x3 - x0) / 3;
+            //double x1 = x0 + h;
+            double x2 = x0 + 2*h;
+            double x1 = (2 * x0 + x3)/3;
+            //double x2 = (2 + 2 * x3)/3;
+            Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx1 = new Expression("f(" + x1.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionx3 = new Expression("f(" + x3.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            double funcionx0 = expresionx0.calculate();
+            double funcionx1 = expresionx1.calculate();
+            double funcionx2 = expresionx2.calculate();
+            double funcionx3 = expresionx3.calculate();
+            double ocho = 8;
+            double tres = 3;
+            double division = tres / ocho;
+
+            //string area = ((division * h) * (funcionx0 + 3*funcionx1 + 3*funcionx2 + funcionx3)).ToString();
+            string area=(((3 * h)/8) * (funcionx0 + 3 * funcionx1 + 3 * funcionx2 + funcionx3)).ToString();
+            return area;
+        }
+
+
+        ///////////////////////////// Comprobar signo /////////////////////////////////////////////
+        
+        public string ObtenerSigno(double valor)
+        {
+            if (valor>0)
+            {
+                return $"+";
+            }
+            else
+            {
+                return $"";
+            }
         }
     }
 }

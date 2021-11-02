@@ -22,6 +22,7 @@ namespace WindowsFormsApp1
             comboBox1.Items.Add("Trapecio múltiples");
             comboBox1.Items.Add("Simpson 1/3");
             comboBox1.Items.Add("Simpson 1/3 múltiples");
+            comboBox1.Items.Add("Simpson 3/8");
             txtCantidad.Enabled = false;
             txtArea.Enabled = false;
         }
@@ -57,6 +58,11 @@ namespace WindowsFormsApp1
                 case "Simpson 1/3 múltiples":
                     cantidad = int.Parse(txtCantidad.Text);
                     area = principal.CalcularSimpsonMultiple(xi, xf, f, cantidad);
+                    txtArea.Text = area;
+                    break;
+                case "Simpson 3/8":
+                    cantidad = int.Parse(txtCantidad.Text);
+                    area = principal.CalcularSimpsonTresOctavos(xi, xf, f, cantidad);
                     txtArea.Text = area;
                     break;
                 default:
