@@ -17,8 +17,8 @@ namespace Logica
             Respuesta respuesta = new Respuesta();
             int contador = 0;
             double xAnt = 0;
-            Expression expresionxi = new Expression("f("+xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) +")", f);
-            Expression expresionxd = new Expression("f("+xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) +")", f);
+            Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
+            Expression expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             double funcionxi = expresionxi.calculate();
             double funcionxd = expresionxd.calculate();
 
@@ -56,7 +56,7 @@ namespace Logica
                     double xr = (xi + xd) / 2;
                     double error = CalcularError(xr, xAnt);
                     contador += 1;
-                    Expression nuevaExpresion = new Expression("f("+xr.ToString(CultureInfo.CreateSpecificCulture("en-GB"))+")", f);
+                    Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                     ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
                     while (resultado.Resultado != false)
                     {
@@ -67,13 +67,13 @@ namespace Logica
                         else
                         {
                             xi = xr;
-                            expresionxi = new Expression("f("+ xi.ToString(CultureInfo.CreateSpecificCulture("en-GB"))+")", f);
+                            expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                         }
                         xAnt = xr;
                         xr = (xi + xd) / 2;
                         error = CalcularError(xr, xAnt);
                         contador += 1;
-                        nuevaExpresion = new Expression("f("+xr.ToString(CultureInfo.CreateSpecificCulture("en-GB"))+")", f);
+                        nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                         resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
 
                     }
@@ -144,26 +144,26 @@ namespace Logica
                 }
                 else
                 {
-                
+
                     double xr = ((funcionxd * xi) - (funcionxi * xd)) / (funcionxd - funcionxi);
                     double error = CalcularError(xr, xAnt);
                     contador += 1;
-                    Expression nuevaExpresion = new Expression("f("+xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) +")", f);
+                    Expression nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                     ResultadoComprobacion resultado = ComprobarCondiciones(tolerancia, numeroIteraciones, contador, nuevaExpresion, error);
                     while (resultado.Resultado != false)
                     {
                         if (nuevaExpresion.calculate() * expresionxi.calculate() < 0)
                         {
                             xd = xr;
-                            expresionxd = new Expression("f("+xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) +")", f);
+                            expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                             funcionxd = expresionxd.calculate();
                         }
                         else
                         {
                             xi = xr;
-                            expresionxi = new Expression("f("+xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) +")", f);
+                            expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                             funcionxi = expresionxi.calculate();
-                            
+
                         }
                         xAnt = xr;
                         xr = ((funcionxd * xi) - (funcionxi * xd)) / (funcionxd - funcionxi);
@@ -206,7 +206,7 @@ namespace Logica
             double xAnt = 0;
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxitolerancia = new Expression("f(" + (xi + tolerancia).ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            if (expresionxi.calculate()==0)
+            if (expresionxi.calculate() == 0)
             {
                 respuesta.Raiz = xi.ToString();
                 respuesta.Comentario = "xi es la raíz";
@@ -245,7 +245,7 @@ namespace Logica
                         nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                         resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
                     }
-                    if (resultado.Comentario== "Se superó el número de iteraciones")
+                    if (resultado.Comentario == "Se superó el número de iteraciones")
                     {
                         respuesta.Converge = "No";
                         respuesta.Comentario = resultado.Comentario;
@@ -261,14 +261,14 @@ namespace Logica
                         respuesta.Error = error.ToString();
                         respuesta.Iteraciones = contador.ToString();
                     }
-                    
+
                 }
             }
             return respuesta;
         }
 
         //////////////////////////////// Secante ///////////////////////////////////
-        public Respuesta CalcularSecante(Function f, double xi, double xd,int iteraciones, double tolerancia)
+        public Respuesta CalcularSecante(Function f, double xi, double xd, int iteraciones, double tolerancia)
         {
             //xd=xi
             //xi=xi+1
@@ -277,8 +277,8 @@ namespace Logica
             double xAnt = 0;
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxd = new Expression("f(" + xd.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            
-            if (expresionxi.calculate()==0)
+
+            if (expresionxi.calculate() == 0)
             {
                 respuesta.Raiz = xi.ToString();
                 respuesta.Comentario = "xi es la raiz";
@@ -288,7 +288,7 @@ namespace Logica
             }
             else
             {
-                if (expresionxd.calculate()==0)
+                if (expresionxd.calculate() == 0)
                 {
                     respuesta.Raiz = xd.ToString();
                     respuesta.Comentario = "xd es la raiz";
@@ -333,7 +333,7 @@ namespace Logica
                             nuevaExpresion = new Expression("f(" + xr.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                             resultado = ComprobarCondiciones(tolerancia, iteraciones, contador, nuevaExpresion, error);
                         }
-                        
+
                         if (resultado.Comentario == "Se superó el número de iteraciones")
                         {
                             respuesta.Converge = "No";
@@ -404,21 +404,21 @@ namespace Logica
         }
 
         /////////////////////////////////// Cálculo Gauss Jordan ////////////////////////////////////////
-        public RespuestaUnidad2 CaclularGaussJordan(double [,] arreglo, int tamaño)
+        public RespuestaUnidad2 CaclularGaussJordan(double[,] arreglo, int tamaño)
         {
             for (int i = 0; i < tamaño; i++)
             {
-                double coef= arreglo[i, i];
-                for (int j = 0; j < tamaño+1; j++)
+                double coef = arreglo[i, i];
+                for (int j = 0; j < tamaño + 1; j++)
                 {
                     arreglo[i, j] = arreglo[i, j] / coef;
                 }
                 for (int x = 0; x < tamaño; x++)
                 {
-                    if (i!=x)
+                    if (i != x)
                     {
                         coef = arreglo[x, i];
-                        for (int k = 0; k < tamaño+1; k++)
+                        for (int k = 0; k < tamaño + 1; k++)
                         {
                             arreglo[x, k] = arreglo[x, k] - (coef * arreglo[i, k]);
                         }
@@ -451,23 +451,23 @@ namespace Logica
         {
             RespuestaUnidad2 respuesta = new RespuestaUnidad2();
             double[] resultados = new double[tamaño];
-            double [] vectorAnterior=new double[tamaño];
-            double [] vectorResultado=new double[tamaño];
+            double[] vectorAnterior = new double[tamaño];
+            double[] vectorResultado = new double[tamaño];
             int contador = 0;
-            while(iteraciones>=contador)
+            while (iteraciones >= contador)
             {
-                contador = contador+1;
-                if (contador>1)
+                contador = contador + 1;
+                if (contador > 1)
                 {
                     vectorResultado.CopyTo(vectorAnterior, 0);
                 }
                 for (int i = 0; i < tamaño; i++)
                 {
-                    double resultado = arreglo[i,tamaño];
+                    double resultado = arreglo[i, tamaño];
                     double x = Convert.ToDouble(arreglo[i, i]);
                     for (int j = 0; j < tamaño; j++)
                     {
-                        if (i!=j)
+                        if (i != j)
                         {
                             resultado = resultado - (arreglo[i, j] * vectorResultado[j]);
                         }
@@ -478,12 +478,12 @@ namespace Logica
                 for (int i = 0; i < tamaño; i++)
                 {
                     resultados[i] = Math.Abs(vectorResultado[i] - vectorAnterior[i]);
-                    if (resultados[i]<tolerancia)
+                    if (resultados[i] < tolerancia)
                     {
                         respuesta.Comentario = "El valor es menor a la tolerancia";
                         respuesta.Posible = true;
                         respuesta.Iteraciones = contador;
-                        respuesta.Valores = SacarValores(vectorResultado,tamaño);
+                        respuesta.Valores = SacarValores(vectorResultado, tamaño);
                         return respuesta;
                     }
                 }
@@ -491,7 +491,7 @@ namespace Logica
             respuesta.Comentario = "Se superó el número de iteraciones";
             respuesta.Posible = false;
             respuesta.Iteraciones = contador;
-            respuesta.Valores = SacarValores(resultados,tamaño);
+            respuesta.Valores = SacarValores(resultados, tamaño);
             return respuesta;
         }
 
@@ -507,7 +507,7 @@ namespace Logica
         }
 
         //////////////////////////////// Cálculo regresión lineal //////////////////////////////////////
-        
+
         public ResultadoUnidad3 CalcularRegresionLineal(double[,] datos, int conteo)
         {
             ResultadoUnidad3 resultado = new ResultadoUnidad3();
@@ -519,10 +519,10 @@ namespace Logica
             {
                 sumX = sumX + datos[i, 0];
                 sumY = sumY + datos[i, 1];
-                sumXY = sumXY + (datos[i,0]*datos[i,1]);
-                sumXC = sumXC + Math.Pow(datos[i,0],2);
+                sumXY = sumXY + (datos[i, 0] * datos[i, 1]);
+                sumXC = sumXC + Math.Pow(datos[i, 0], 2);
             }
-            double pendiente= ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX,2)));
+            double pendiente = ((conteo * sumXY) - (sumX * sumY)) / ((conteo * sumXC) - (Math.Pow(sumX, 2)));
             double ordenada = (sumY - (pendiente * sumX)) / conteo;
             string signo = ObtenerSigno(ordenada);
             string funcion = ($"y = {pendiente.ToString("###0.000")}x {signo}{ordenada.ToString("###0.000")} ");
@@ -534,20 +534,20 @@ namespace Logica
             for (int i = 0; i < conteo; i++)
             {
                 Sr += Math.Pow((pendiente * datos[i, 0]) + ordenada - datos[i, 1], 2);
-                St +=Math.Pow(mediaY - datos[i, 1], 2);
+                St += Math.Pow(mediaY - datos[i, 1], 2);
             }
 
             //// da raíz negativa y por lo tanto muestra NAN
             //double r = Math.Sqrt((St - Sr) / St) * 100;
-            
-            double r= Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
-            
-            string condicion ="";
-            string ajuste ="";
+
+            double r = Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
+
+            string condicion = "";
+            string ajuste = "";
 
             if (r < 80)
             {
-                ajuste =r.ToString("###0.00");
+                ajuste = r.ToString("###0.00");
                 condicion = "El ajuste no es aceptable";
             }
             else
@@ -555,15 +555,15 @@ namespace Logica
                 ajuste = r.ToString("###0.00");
                 condicion = "El ajuste es aceptable";
             }
-            
+
             resultado.Funcion = funcion;
             resultado.Condicion = condicion;
-            resultado.PorcentajeAjuste =ajuste;
+            resultado.PorcentajeAjuste = ajuste;
 
             return resultado;
 
         }
-        
+
         /////////////////////////////// Cálculo regresión polinomial //////////////////////////////////
         public ResultadoUnidad3 CalcularRegresionPolinomial(double[,] datos, int grado, int cantidad)
         {
@@ -571,35 +571,35 @@ namespace Logica
             double[] Vy = new double[cantidad];
             double sumX = 0;
             double sumY = 0;
-            double[,] M = new double[grado+1,grado+2];
+            double[,] M = new double[grado + 1, grado + 2];
             for (int i = 0; i < cantidad; i++)
             {
-                Vx[i] = datos[i,0];
+                Vx[i] = datos[i, 0];
                 sumX += Vx[i];
                 Vy[i] = datos[i, 1];
                 sumY += Vy[i];
-                for (int j = 0; j < grado+1; j++)
+                for (int j = 0; j < grado + 1; j++)
                 {
-                    for (int k = 0; k < grado+1; k++)
+                    for (int k = 0; k < grado + 1; k++)
                     {
                         M[j, k] += Math.Pow(Vx[i], j + k);
                     }
-                    M[j, grado+1] += Vy[i] * Math.Pow(Vx[i],j);
+                    M[j, grado + 1] += Vy[i] * Math.Pow(Vx[i], j);
                 }
             }
-            RespuestaUnidad2 resultadoGaussJordan = CaclularGaussJordan(M, grado+1);
+            RespuestaUnidad2 resultadoGaussJordan = CaclularGaussJordan(M, grado + 1);
             string funcion = "y =";
             int contador = 0;
             foreach (var item in resultadoGaussJordan.Valores)
             {
                 string signo = ObtenerSigno(item);
-                if (contador==0)
+                if (contador == 0)
                 {
                     funcion = funcion + $" {signo}{item.ToString("###0.000")}";
                 }
                 else
                 {
-                    if (contador==1)
+                    if (contador == 1)
                     {
                         funcion = funcion + $" {signo}{item.ToString("###0.000")}x";
                     }
@@ -608,7 +608,7 @@ namespace Logica
                         funcion = funcion + $" {signo}{item.ToString("###0.000")}x^{contador}";
                     }
                 }
-                contador+=1; 
+                contador += 1;
             }
             ResultadoUnidad3 resultado = new ResultadoUnidad3();
             resultado.Funcion = funcion;
@@ -619,14 +619,14 @@ namespace Logica
             double St = 0;
             for (int i = 0; i < cantidad; i++)
             {
-               
-               St += Math.Pow((sumY / cantidad) - Vy[i], 2);
-               suma = 0;
-               for (int j = 0; j < grado+1; j++)
-               {
+
+                St += Math.Pow((sumY / cantidad) - Vy[i], 2);
+                suma = 0;
+                for (int j = 0; j < grado + 1; j++)
+                {
                     suma += (resultadoGaussJordan.Valores.ElementAt(j) * Math.Pow(Vx[i], j));
-               }
-               Sr += Math.Pow(suma -Vy[i],2);
+                }
+                Sr += Math.Pow(suma - Vy[i], 2);
             }
 
             double r = Math.Sqrt(Math.Abs((St - Sr) / St)) * 100;
@@ -657,29 +657,29 @@ namespace Logica
         }
 
         /////////////////////////////// Cálculo método del trapecio múltiples ///////////////////////
-        
+
         public string CalcularMetodoTrapeciosMultiples(double xi, double xf, Function f, double n)
         {
             double h = (xf - xi) / n;
-            double xh = xi+h;
+            double xh = xi + h;
             Expression expresionxi = new Expression("f(" + xi.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionxf = new Expression("f(" + xf.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             double funcionxi = expresionxi.calculate();
             double funcionxf = expresionxf.calculate();
             double a = 0;
-            for (int i = 0; i < n-1; i++)
+            for (int i = 0; i < n - 1; i++)
             {
                 Expression expresionxh = new Expression("f(" + xh.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                 double funcionxh = expresionxh.calculate();
                 a = a + funcionxh;
                 xh = xh + h;
             }
-            string area = ((h / 2) * (funcionxi+2*a+funcionxf)).ToString("###0.000");
+            string area = ((h / 2) * (funcionxi + 2 * a + funcionxf)).ToString("###0.000");
             return area;
         }
 
         ////////////////////////////// Cálculo método Simpson 1/3 ////////////////////////////////////
-        
+
         public string CalcularSimpson(double x0, double x2, Function f)
         {
             double x1 = (x0 + x2) / 2;
@@ -690,27 +690,27 @@ namespace Logica
             double funcionx2 = expresionx2.calculate();
             double funcionx1 = expresionx1.calculate();
             double h = (x2 - x0) / 2;
-            string area = ((h/3) * (funcionx0 + 4 * funcionx1 + funcionx2)).ToString("###0.000");
+            string area = ((h / 3) * (funcionx0 + 4 * funcionx1 + funcionx2)).ToString("###0.000");
             return area;
         }
 
         ////////////////////////////// Cálculo método Simpson 1/3 múltiples //////////////////////////
-        
+
         public string CalcularSimpsonMultiple(double x0, double x2, Function f, double n)
         {
-            
+
             Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             double funcionx0 = expresionx0.calculate();
             double funcionx2 = expresionx2.calculate();
             double h = (x2 - x0) / n;
-            double xi= x0 + h;
-            double xp= xi + h;
+            double xi = x0 + h;
+            double xp = xi + h;
             double sumI = 0;
             double sumP = 0;
             for (int i = 1; i < n; i++)
             {
-                if (Math.Pow(-1,i)>0)
+                if (Math.Pow(-1, i) > 0)
                 {
                     Expression expresionxp = new Expression("f(" + xp.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
                     double funcionxp = expresionxp.calculate();
@@ -724,21 +724,25 @@ namespace Logica
                     sumI = sumI + funcionxi;
                     xi = xi + 2 * h;
                 }
-                
+
             }
-            string area = ((h / 3) * (funcionx0 + 4 * sumI +2*sumP+ funcionx2)).ToString("###0.000");
+            //string area = ((h / 3) * (funcionx0 + 4 * sumI + 2 * sumP + funcionx2)).ToString("###0.000");
+            string area = ((h / 3) * (funcionx0 + 4 * sumI + 2 * sumP + funcionx2)).ToString();
             return area;
         }
 
         ///////////////////////////// Cálculo método Simpson 3/8 ///////////////////////////////////
-        
-        public string CalcularSimpsonTresOctavos(double x0,double x3, Function f, double n)
+
+        public string CalcularSimpsonTresOctavos(double x0, double x3, Function f,int n)
         {
-            /*double h = (x3 - x0) / n;
+           
+            double h = (x3 - x0) / n;
+            double x3n = x3 - 3*h;
+            int nn = n - 3;
+            double resultado =double.Parse(CalcularSimpsonMultiple(x0, x3n, f, nn));
+            x0 = x3n;
+            double x1 = x3 - 2* h;
             double x2 = x3 - h;
-            double x1 = x2 - h;
-            x0 = x1 - h;
-            double h1 = (x3 - x0) / 3;
             Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionx1 = new Expression("f(" + x1.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
             Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
@@ -747,30 +751,8 @@ namespace Logica
             double funcionx1 = expresionx1.calculate();
             double funcionx2 = expresionx2.calculate();
             double funcionx3 = expresionx3.calculate();
-            double ocho = 8;
-            double tres = 3;
-            double division = tres / ocho;*/
-
-            double h = (x3 - x0) / 3;
-            //double x1 = x0 + h;
-            double x2 = x0 + 2*h;
-            double x1 = (2 * x0 + x3)/3;
-            //double x2 = (2 + 2 * x3)/3;
-            Expression expresionx0 = new Expression("f(" + x0.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            Expression expresionx1 = new Expression("f(" + x1.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            Expression expresionx2 = new Expression("f(" + x2.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            Expression expresionx3 = new Expression("f(" + x3.ToString(CultureInfo.CreateSpecificCulture("en-GB")) + ")", f);
-            double funcionx0 = expresionx0.calculate();
-            double funcionx1 = expresionx1.calculate();
-            double funcionx2 = expresionx2.calculate();
-            double funcionx3 = expresionx3.calculate();
-            double ocho = 8;
-            double tres = 3;
-            double division = tres / ocho;
-
-            //string area = ((division * h) * (funcionx0 + 3*funcionx1 + 3*funcionx2 + funcionx3)).ToString();
-            string area=(((3 * h)/8) * (funcionx0 + 3 * funcionx1 + 3 * funcionx2 + funcionx3)).ToString();
-            return area;
+            double area = resultado+((0.375 * h) * (funcionx0 + (3 * funcionx1) + (3 * funcionx2) + funcionx3));
+            return area.ToString();
         }
 
 

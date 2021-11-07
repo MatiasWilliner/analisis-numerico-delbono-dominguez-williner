@@ -62,7 +62,7 @@ namespace WindowsFormsApp1
                     break;
                 case "Simpson 3/8":
                     cantidad = int.Parse(txtCantidad.Text);
-                    area = principal.CalcularSimpsonTresOctavos(xi, xf, f, cantidad);
+                    area = principal.CalcularSimpsonTresOctavos(xi, xf, f,cantidad);
                     txtArea.Text = area;
                     break;
                 default:
