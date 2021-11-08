@@ -735,7 +735,6 @@ namespace Logica
 
         public string CalcularSimpsonTresOctavos(double x0, double x3, Function f,int n)
         {
-           
             double h = (x3 - x0) / n;
             double x3n = x3 - 3*h;
             int nn = n - 3;
@@ -751,8 +750,23 @@ namespace Logica
             double funcionx1 = expresionx1.calculate();
             double funcionx2 = expresionx2.calculate();
             double funcionx3 = expresionx3.calculate();
-            double area = resultado+((0.375 * h) * (funcionx0 + (3 * funcionx1) + (3 * funcionx2) + funcionx3));
-            return area.ToString();
+            string area;
+            if (nn > 0)
+            {
+                area = (resultado + ((0.375 * h) * (funcionx0 + (3 * funcionx1) + (3 * funcionx2) + funcionx3))).ToString();
+            }
+            else
+            {
+                if (n<3)
+                {
+                    area = Convert.ToString("No se puede");
+                }
+                else
+                {
+                    area = (((0.375 * h) * (funcionx0 + (3 * funcionx1) + (3 * funcionx2) + funcionx3))).ToString();
+                }
+            }
+            return area;
         }
 
 
